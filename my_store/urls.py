@@ -10,4 +10,5 @@ urlpatterns = [
     path('registrar', views.registrar, name="registrar"),
 
     path('login',views.login,name="login"),
+    path('accounts/profile/', views.cargar, name= "cargar"),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
