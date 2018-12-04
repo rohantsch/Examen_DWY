@@ -8,3 +8,6 @@ def index(request):
 
 def registrar(request):
     return render(request, 'registrar.html')
+
+def home(request):
+    return render(request, 'home.html')
