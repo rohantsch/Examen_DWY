@@ -2,9 +2,13 @@
 <html lang="en-us">
 
 <head>
+<<<<<<< HEAD
     {% load static %}
     {% load socialaccount %}
     <title>My Store</title>
+=======
+    <title>My Costs</title>
+>>>>>>> master
     <meta charset="UTF-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -32,11 +36,11 @@
     
                             <div class="form-wrapper md-elevation-8 p-8">
     
-                                <div class="logo bg-secondary">
-                                    <span>F</span>
+                                <div class="logo bg-secondary" >
+                                    <img src="../static/images/logos/logo_mycost.PNG" width="150px" height="150px"/>
                                 </div>
     
-                                <div class="title mt-4 mb-8">Bienvenido a My Store!</div>
+                                <div class="title mt-4 mb-8">Bienvenido a My Costs!</div>
     
                                 <form name="loginForm" method="POST" action="/login" novalidate>
                                     {% csrf_token %}

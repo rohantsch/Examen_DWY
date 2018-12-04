@@ -18,6 +18,7 @@ def index(request):
 def registrar(request):
     return render(request, 'registrar.html')
 
+<<<<<<< HEAD
 def login(request):
     email = request.POST.get('email','')
     contrasenia = request.POST.get('contrasenia','')
@@ -37,3 +38,7 @@ def login(request):
 
 def cargar(request):
     return redirect('index')
+=======
+def home(request):
+    return render(request, 'home.html')
+>>>>>>> master
