@@ -28,7 +28,7 @@ def login(request):
             #auth_login(request, user)
             request.session['usuario'] = usuario[0].nombre
             request.session['id'] = usuario[0].id
-            return redirect('index')
+            return redirect('home')
         else:
             return redirect('index',{'mensaje':'Las credenciales son incorrectas.'})
     else:
@@ -40,3 +40,20 @@ def cargar(request):
 def home(request):
     usuario = request.session.get('usuario',None)
     return render(request, 'home.html',{'usuario':usuario})
+
+def crear_usuario(request):
+    nombre = request.POST.get('nombre','')
+    email = request.POST.get('email','')
+    contrasenia = request.POST.get('contrasenia','')
+    contrasenia2 = request.POST.get('confirm_contrasenia','')
+    
+    if contrasenia == contrasenia2:
+        usuario = Usuario.objects.filter(email=email)
+        if len(usuario) == 0:  
+            usuario = Usuario(nombre=nombre, email=email, contrasenia= contrasenia)
+            usuario.save()
+            return redirect('index')
+        else:
+            return redirect('index',{'mensaje':'El usuario ingresado ya esta registrado.'})
+    else:
+        return redirect('index',{'mensaje':'Las contraseñas no coinciden'})
