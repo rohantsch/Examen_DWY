@@ -12,13 +12,11 @@ from django.contrib.auth import authenticate,logout, login as auth_login
 from django.contrib.auth.decorators import login_required
 
 def index(request):
-    usuario = request.session.get('usuario',None)
-    return render(request, 'index.html',{'usuario':usuario})
+    return render(request, 'index.html')
 
 def registrar(request):
     return render(request, 'registrar.html')
 
-<<<<<<< HEAD
 def login(request):
     email = request.POST.get('email','')
     contrasenia = request.POST.get('contrasenia','')
@@ -37,8 +35,8 @@ def login(request):
         return redirect('index',{'mensaje':'No existe el Usuario.'})
 
 def cargar(request):
-    return redirect('index')
-=======
+    return redirect('home')
+
 def home(request):
-    return render(request, 'home.html')
->>>>>>> master
+    usuario = request.session.get('usuario',None)
+    return render(request, 'home.html',{'usuario':usuario})
