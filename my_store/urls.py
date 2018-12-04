@@ -9,5 +9,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('registrar', views.registrar, name="registrar")
+    path('registrar', views.registrar, name="registrar"),
+    path('home', views.home, name="home"),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

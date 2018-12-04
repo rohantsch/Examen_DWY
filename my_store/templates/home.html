@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>My Cost!</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../static/favicon.ico" />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700italic,700,900,900italic" rel="stylesheet">
+
+    <!-- STYLESHEETS -->
+    <style type="text/css">
+            [fuse-cloak],
+            .fuse-cloak {
+                display: none !important;
+            }
+        </style>
+
+    <!-- Icons.css -->
+    <link type="text/css" rel="stylesheet" href="../static/icons/fuse-icon-font/style.css">
+    <!-- Animate.css -->
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/animate.css/animate.min.css">
+    <!-- PNotify -->
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/pnotify/dist/PNotifyBrightTheme.css">
+    <!-- Nvd3 - D3 Charts -->
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/nvd3/build/nv.d3.min.css" />
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" rel="stylesheet" href="../static/node_modules/perfect-scrollbar/css/perfect-scrollbar.css" />
+    <!-- Fuse Html -->
+    <link type="text/css" rel="stylesheet" href="../static/fuse-html/fuse-html.min.css" />
+    <!-- Main CSS -->
+    <link type="text/css" rel="stylesheet" href="../static/css/main.css">
+    <!-- / STYLESHEETS -->
+
+    <!-- JAVASCRIPT -->
+    <!-- jQuery -->
+    <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Mobile Detect -->
+    <script type="text/javascript" src="../static/node_modules/mobile-detect/mobile-detect.min.js"></script>
+    <!-- Perfect Scrollbar -->
+    <script type="text/javascript" src="../static/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+    <!-- Popper.js -->
+    <script type="text/javascript" src="../static/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="../static/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Nvd3 - D3 Charts -->
+    <script type="text/javascript" src="../static/node_modules/d3/d3.min.js"></script>
+    <script type="text/javascript" src="../static/node_modules/nvd3/build/nv.d3.min.js"></script>
+    <!-- Data tables -->
+    <script type="text/javascript" src="../static/node_modules/datatables.net/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="../static/node_modules/datatables-responsive/js/dataTables.responsive.js"></script>
+    <!-- PNotify -->
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotify.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyStyleMaterial.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyButtons.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyCallbacks.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyMobile.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyHistory.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyDesktop.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyConfirm.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyReference.js"></script>
+    <!-- Fuse Html -->
+    <script type="text/javascript" src="../static/fuse-html/fuse-html.min.js"></script>
+    <!-- Main JS -->
+    <script type="text/javascript" src="../static/js/main.js"></script>
+    <!-- / JAVASCRIPT -->
+</head>
+
+<body class="layout layout-vertical layout-left-navigation layout-above-toolbar layout-above-footer">
+    <main>
+        <nav id="toolbar" class="bg-white">
+
+            <div class="row no-gutters align-items-center flex-nowrap">
+
+                <div class="col">
+
+                    <div class="row no-gutters align-items-center flex-nowrap">
+
+                        <button type="button" class="toggle-aside-button btn btn-icon d-block d-lg-none" data-fuse-bar-toggle="aside">
+                            <i class="icon icon-menu"></i>
+                        </button>
+
+                        <div class="toolbar-separator d-block d-lg-none"></div>
+
+                        <div class="shortcuts-wrapper row no-gutters align-items-center px-0 px-sm-2">
+
+                            <div class="shortcuts row no-gutters align-items-center d-none d-md-flex">
+
+                                <a href="/home" class="shortcut-button btn btn-icon mx-1">
+                                    <i class="icon icon-home"></i>
+                                </a>                                
+
+                            </div>                            
+                        </div>
+
+                        <div class="toolbar-separator"></div>
+
+                    </div>
+                </div>
+
+                <div class="col-auto">
+
+                    <div class="row no-gutters align-items-center justify-content-end">
+
+                        <div class="user-menu-button dropdown">
+
+                            <div class="dropdown-toggle ripple row align-items-center no-gutters px-2 px-sm-4" role="button" id="dropdownUserMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="avatar-wrapper">
+                                    <img class="avatar" src="../static/images/avatars/profile.jpg">
+                                    <i class="status text-green icon-checkbox-marked-circle s-4"></i>
+                                </div>
+                                <span class="username mx-3 d-none d-md-block">John Doe</span>
+                            </div>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownUserMenu">
+
+                                <a class="dropdown-item" href="#">
+                                    <div class="row no-gutters align-items-center flex-nowrap">
+                                        <i class="icon-account"></i>
+                                        <span class="px-3">Mi perfil</span>
+                                    </div>
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="#">
+                                    <div class="row no-gutters align-items-center flex-nowrap">
+                                        <i class="icon-logout"></i>
+                                        <span class="px-3">Cerrar sesión</span>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="wrapper">
+            <aside id="aside" class="aside aside-left" data-fuse-bar="aside" data-fuse-bar-media-step="md" data-fuse-bar-position="left">
+                <div class="aside-content bg-primary-700 text-auto">
+
+                    <div class="aside-toolbar">
+
+                        <div class="logo">
+                            <span class="logo-icon">F</span>
+                            <span class="logo-text">My Costs!</span>
+                        </div>
+
+                        <button id="toggle-fold-aside-button" type="button" class="btn btn-icon d-none d-lg-block" data-fuse-aside-toggle-fold>
+                            <i class="icon icon-backburger"></i>
+                        </button>
+
+                    </div>
+
+                    <ul class="nav flex-column custom-scrollbar" id="sidenav" data-children=".nav-item">
+
+                        <li class="subheader">
+                            <span>Listas</span>
+                        </li>
+
+                        <li class="nav-item" role="tab" id="heading-dashboards">
+                            <a class="nav-link ripple" data-toggle="collapse" data-target="#collapse-dashboards" href="#" aria-expanded="false" aria-controls="collapse-dashboards">
+
+                                <i class="icon s-4 icon-view-list"></i>
+
+                                <span>Ver listas creadas</span>
+                            </a>                            
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link ripple " href="apps-calendar.html" data-url="apps-e-commerce-products.html">
+
+                                <i class="icon s-4 icon-shape-rectangle-plus"></i>
+
+                                <span>Crear nueva lista</span>
+                            </a>
+                        </li>                        
+
+                        <li class="subheader">
+                            <span>Tiendas</span>
+                        </li>
+
+                        <li class="nav-item" role="tab" id="heading-authentication">
+
+                            <a class="nav-link ripple" data-toggle="collapse" data-target="#collapse-authentication" href="#" aria-expanded="false" aria-controls="collapse-authentication">
+
+                                <i class="icon s-4 icon-store"></i>
+
+                                <span>Crear nueva tienda</span>
+                            </a>                        
+                        </li>
+                    </ul>
+                </div>
+
+            </aside>
+            <div class="content-wrapper">
+                <div class="content custom-scrollbar">
+
+                    <div id="e-commerce-products" class="page-layout carded full-width">
+
+                        <div class="top-bg bg-primary"></div>
+
+                        <!-- CONTENT -->
+                        <div class="page-content-wrapper">
+
+                            <!-- HEADER -->
+                            <div class="page-header light-fg row no-gutters align-items-center justify-content-between">
+
+                                <!-- APP TITLE -->
+                                <div class="col-12 col-sm">
+
+                                    <div class="logo row no-gutters justify-content-center align-items-start justify-content-sm-start">
+                                        <div class="logo-icon mr-3 mt-1">
+                                            <i class="icon-cube-outline s-6"></i>
+                                        </div>
+                                        <div class="logo-text">
+                                            <div class="h4">Listas</div>
+                                            <div class="">Total listas: 20</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- / APP TITLE -->
+
+                                <!-- SEARCH -->
+                                <div class="col search-wrapper px-2">
+
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-icon">
+                                                <i class="icon icon-magnify"></i>
+                                            </button>
+                                        </span>
+                                        <input id="products-search-input" type="text" class="form-control" placeholder="Buscar" aria-label="Search" />
+                                    </div>
+
+                                </div>
+                                <!-- / SEARCH -->
+
+                                <div class="col-auto">
+                                    <a href="apps-e-commerce-product.html" class="btn btn-light">Agregar nueva lista</a>
+                                </div>
+
+                            </div>
+                            <!-- / HEADER -->
+
+                            <div class="page-content-card">
+
+                                <table id="e-commerce-products-table" class="table dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">ID</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Image</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Name</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Category</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Price</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Quantity</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Active</span>
+                                                </div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table-header">
+                                                    <span class="column-title">Actions</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Printed Dress</td>
+                                            <td>Dresses</td>
+                                            <td>10.24</td>
+                                            <td>3</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Green Skirt</td>
+                                            <td>Skirts</td>
+                                            <td>24.62</td>
+                                            <td>92</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>3</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Printed Dress</td>
+                                            <td>Dresses</td>
+                                            <td>49.29</td>
+                                            <td>60</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>4</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>White T-Shirt</td>
+                                            <td>T-Shirts</td>
+                                            <td>69.11</td>
+                                            <td>101</td>
+                                            <td>false</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>5</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Red Hoodie</td>
+                                            <td>Hoodies</td>
+                                            <td>10.24</td>
+                                            <td>19</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>6</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Red Hoodie</td>
+                                            <td>Hoodies</td>
+                                            <td>59.36</td>
+                                            <td>101</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>7</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Summer Dress</td>
+                                            <td>Dresses</td>
+                                            <td>64.21</td>
+                                            <td>34</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>8</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Black Shoes</td>
+                                            <td>Shoes</td>
+                                            <td>69.73</td>
+                                            <td>4</td>
+                                            <td>false</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>9</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Yellow Bag</td>
+                                            <td>Bags</td>
+                                            <td>57.37</td>
+                                            <td>58</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>10</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Brown Shoes</td>
+                                            <td>Shoes</td>
+                                            <td>68.4</td>
+                                            <td>125</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>11</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Brown Shoes</td>
+                                            <td>Shoes</td>
+                                            <td>53.6</td>
+                                            <td>27</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>12</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Night Dress</td>
+                                            <td>Dresses</td>
+                                            <td>10.24</td>
+                                            <td>188</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>13</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Red Hoodie</td>
+                                            <td>Hoodies</td>
+                                            <td>24.62</td>
+                                            <td>147</td>
+                                            <td>false</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>14</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Red Hoodie</td>
+                                            <td>Hoodies</td>
+                                            <td>49.29</td>
+                                            <td>21</td>
+                                            <td>false</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>15</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Summer Dress</td>
+                                            <td>Dresses</td>
+                                            <td>69.11</td>
+                                            <td>10</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>16</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Red Hoodie</td>
+                                            <td>Hoodies</td>
+                                            <td>10.24</td>
+                                            <td>68</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>17</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Printed Dress</td>
+                                            <td>Dresses</td>
+                                            <td>59.36</td>
+                                            <td>66</td>
+                                            <td>false</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>18</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Blouse</td>
+                                            <td>Dresses</td>
+                                            <td>64.21</td>
+                                            <td>60</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>19</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Leather Belt</td>
+                                            <td>Belts</td>
+                                            <td>69.73</td>
+                                            <td>78</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>20</td>
+                                            <td>
+                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
+                                            </td>
+                                            <td>Leather Belt</td>
+                                            <td>Belts</td>
+                                            <td>57.37</td>
+                                            <td>2</td>
+                                            <td>true</td>
+                                            <td>
+                                                <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <i class="icon icon-pencil s-4"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- / CONTENT -->
+                    </div>
+
+                    <script type="text/javascript" src="../static/js/apps/e-commerce/products/products.js"></script>
+
+                </div>
+            </div>    
+
+        </div>
+    </main>
+</body>
+</html>
