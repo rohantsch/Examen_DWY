@@ -72,7 +72,7 @@ def crear_lista(request):
     lista = Lista.objects.filter(nombre=nombre, usuario=usuario)
 
     if len(lista) == 0:  
-        lista = Lista(usuario=usuario, nombre= nombre, totalPresupuesto = 0, totalProductosComprados= 0, costoTotalPresupuesto= 0, costoTotalReal=0, estado=False)
+        lista = Lista(usuario=usuario, nombre= nombre, totalPresupuesto = 0, totalProductosComprados= 0, costoTotalPresupuesto= 0, costoTotalReal=0, estado=True)
         lista.save()        
         data = {
             'mensaje': 'Lista creada, exitosamente!',
