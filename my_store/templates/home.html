@@ -313,7 +313,7 @@
                                                 <td>{{elemento.costoTotalReal}}</td>
                                                 <td>{{elemento.estado}}</td>
                                                 <td>
-                                                    <button value="{{elemento.id}}|{{elemento.nombre}}" type="button" class="btn btn-icon editar_lista_pencil" data-toggle="modal" data-nombre="{{elemento.nombre}}" data-idlista="{{elemento.id}}" data-target="#editar_modal" aria-label="Product details">
+                                                    <button value="{{elemento.id}}|{{elemento.nombre}}" type="button" class="btn btn-icon editar_lista_pencil" data-toggle="modal" data-rowcounter="{{forloop.counter0}}" data-nombre="{{elemento.nombre}}" data-idlista="{{elemento.id}}" data-target="#editar_modal" aria-label="Product details">
                                                         <i class="icon icon-pencil s-4"></i>
                                                     </button>
                                                 </td>
@@ -382,13 +382,15 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Nombre lista :</label>
-                                <input type="text" id="editar_nombre" name="editar_nombre" class="form-control" id="recipient-name" value="@data-whatever"/>
+                                <input type="text" id="editar_nombre" name="editar_nombre" class="form-control" />
+                                <input type="hidden" id="editar_id" name="editar_id" class="form-control" value=""/>
+                                <input type="hidden" id="hidden_row_number" name="hidden_row_number" class="form-control" value=""/>
                             </div>                        
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" id="editar_lista" class="btn btn-primary">Editar</button>
+                        <button type="button" id="editar_lista_button" class="btn btn-primary">Editar</button>
                     </div>
                 </div>
             </div>
@@ -398,6 +400,8 @@
 </body>
 <script type="text/javascript">
       $( document ).ready(function() {
+
+          var id_lista = 0;
 
             var t = $('#e-commerce-products-table').DataTable();            
             $("#crear_lista").on("click",function () {
@@ -432,11 +436,56 @@
                     }
                 });
             });
+
+
+            $("#editar_lista_button").on("click",function () {
+                str = $('#editar_form').serialize();
+                console.log( str );
+                $.ajax({
+                    type: "POST",
+                    url: "listas/editar/" +  $("#editar_id").val(),
+                    data: str,
+                    success: function(data) {
+                        $('#editar_modal').modal('toggle');
+                        
+                        var estado = 'False';
+                        if(data.estado){
+                            estado = 'True';
+                        }
+                        var temp = 
+                            [
+                                data.id, 
+                                data.nombre, 
+                                data.totalPresupuesto, 
+                                data.totalProductoComprados, 
+                                data.costoTotalPresupuesto, 
+                                data.costoTotalReal, 
+                                estado,
+                                '<button type="button" class="btn btn-icon" aria-label="Product details">' +
+                                    '<i class="icon icon-pencil s-4"></i>' +
+                                '</button>'
+                            ];
+                        
+                        t.row(data.row_number).data(temp).draw();
+
+                        PNotify.success({
+                            title: 'Lista editada!',
+                            text: 'Su lista, a sido editada correctamente.'
+                        });
+                    },
+                    error: function(data) {
+                        alert("error");
+                    }
+                });
+            });
             
             $(document).on("click", ".editar_lista_pencil", function () {
                 var nombre = $(this).data('nombre');
-                var id = $(this).data('idlist');
-                $("#editar_nombre").val( nombre );           
+                var id_lista = $(this).data('idlista');
+                var row_number = $(this).data('rowcounter');
+                $("#editar_nombre").val( nombre );
+                $("#editar_id").val(id_lista);
+                $("#hidden_row_number").val(row_number);
             });
         });
 </script>

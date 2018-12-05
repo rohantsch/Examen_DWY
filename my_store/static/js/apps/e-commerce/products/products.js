@@ -89,7 +89,7 @@
                         render    : function (data, type) {
                             if ( type === 'display' )
                             {
-                                if ( data === 'true' || data === 'True' )
+                                if ( data === 'true' || data === 'True' || data === true)
                                 {
                                     return '<i class="icon-checkbox-marked-circle text-success"></i>';
                                 }

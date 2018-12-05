@@ -88,7 +88,31 @@ def crear_lista(request):
             'type' : 'error',
             'tittle': 'Error!'
         }
-        return JsonResponse(data,safe=False)   
+        return JsonResponse(data,safe=False)
+
+def editar_lista(request, id):
+    nombre = request.POST.get('editar_nombre','')
+    row_number = request.POST.get('hidden_row_number','')
+    
+    lista = Lista.objects.get(pk=id)
+    lista.nombre = nombre
+    lista.save()
+
+    data = { 
+        'mensaje': 'Lista, editada!', 
+        'type' : 'success', 
+        'tittle': 'Editar lista',
+        'id': lista.id,
+        'nombre': lista.nombre,
+        'totalPresupuesto' : lista.totalPresupuesto,
+        'totalProductoComprados': lista.totalProductosComprados,
+        'costoTotalPresupuesto': lista.costoTotalPresupuesto,
+        'costoTotalReal': lista.costoTotalReal,
+        'estado': lista.estado,
+        'row_number': row_number
+    } 
+        
+    return JsonResponse(data)
 
 def crear_tienda(request):
 
