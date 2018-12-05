@@ -76,6 +76,23 @@ def crear_lista(request):
     else:
         return serializers.serialize('json', lista)
     return False
+
+def crear_tienda(request):
+
+    nombre = request.POST.get('nombre','')
+    nombreSucursal = request.POST.get('nombreSucursal','')
+    direccion = request.POST.get('direccion','')
+    region = request.POST.get('region','')
+    comuna = request.POST.get('comuna','')
+
+    tienda = Tienda.objects.filter(nombre=nombre)
+
+    if len(lista) == 0:  
+        tienda = Tienda(nombre=nombre, nombreSucursal=nombreSucursal, direccion=direccion, region=region, comuna=comuna, estado=False)
+        tienda.save()
+        return redirect('tienda')
+    else:
+        return redirect('tienda',{'mensaje':'La tiena ya existe'})
     
 def tienda(request):
     usuario = request.session.get('usuario',None)

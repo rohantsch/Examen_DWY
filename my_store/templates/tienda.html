@@ -66,6 +66,8 @@
     <script type="text/javascript" src="../static/fuse-html/fuse-html.min.js"></script>
     <!-- Main JS -->
     <script type="text/javascript" src="../static/js/main.js"></script>
+    <!--APP-->
+    <script type="text/javascript" src="../static/js/app.js"></script>
     <!-- / JAVASCRIPT -->
 </head>
 
@@ -163,7 +165,7 @@
                         </li>
 
                         <li class="nav-item" role="tab" id="heading-dashboards">
-                            <a class="nav-link ripple" data-toggle="collapse" data-target="#collapse-dashboards" href="#" aria-expanded="false" aria-controls="collapse-dashboards">
+                            <a class="nav-link ripple" href="/home" >
 
                                 <i class="icon s-4 icon-view-list"></i>
 
@@ -241,9 +243,8 @@
                                 </div>
                                 <!-- / SEARCH -->
 
-                                <div class="col-auto">
-                                    <a href="apps-e-commerce-product.html" class="btn btn-light">Agregar nueva tienda</a>
-                                </div>
+                                <button type="button" class="btn mb-4" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar nueva tienda
+                                </button>
 
                             </div>
                             <!-- / HEADER -->
@@ -299,68 +300,22 @@
 
                                     <tbody>
 
-                                        <tr>
-                                            <td>1</td>
-                                            <td>
-                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
-                                            </td>
-                                            <td>Printed Dress</td>
-                                            <td>Dresses</td>
-                                            <td>10.24</td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon" aria-label="Product details">
-                                                    <i class="icon icon-pencil s-4"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        {% for p in tiendas %}
+                                            <tr>
+                                                <th scope="row">{{p.nombre}}</th>
+                                                <td>{{p.nombreSucursal}}</td>
+                                                <td>{{p.direccion}}</td>
+                                                <td>{{p.region}}</td>
+                                                <td>{{p.comuna}}</td>
+                                                <td>{{p.estado}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                        <i class="icon icon-pencil s-4"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
 
-                                        <tr>
-                                            <td>2</td>
-                                            <td>
-                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
-                                            </td>
-                                            <td>Green Skirt</td>
-                                            <td>Skirts</td>
-                                            <td>24.62</td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon" aria-label="Product details">
-                                                    <i class="icon icon-pencil s-4"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>3</td>
-                                            <td>
-                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
-                                            </td>
-                                            <td>Printed Dress</td>
-                                            <td>Dresses</td>
-                                            <td>49.29</td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon" aria-label="Product details">
-                                                    <i class="icon icon-pencil s-4"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>4</td>
-                                            <td>
-                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
-                                            </td>
-                                            <td>White T-Shirt</td>
-                                            <td>T-Shirts</td>
-                                            <td>69.11</td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon" aria-label="Product details">
-                                                    <i class="icon icon-pencil s-4"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-
-
-                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -375,5 +330,86 @@
 
         </div>
     </main>
+
+    <!-- Modal Crear Tienda -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Crear tienda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_crear">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Nombre Tienda:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control"/>
+                        </div>   
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Nombre Sucursal:</label>
+                            <input type="text" id="nombreSucursal" name="nombreSucursal" class="form-control" />
+                        </div>    
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Dirección:</label>
+                            <input type="text" id="direccion" name="direccion" class="form-control"  />
+                        </div>  
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Región:</label>
+                            <input type="text" id="region" name="region" class="form-control"  />
+                        </div>  
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Comuna:</label>
+                            <input type="text" id="comuna" name="comuna" class="form-control"  />
+                        </div>  
+                        <!--  
+                        <div class="form-group">
+                            <label for="region">Región:</label>
+                            <select class="form-control" name="region" id="region">
+                                <option hidden value="">Seleccione Region</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comuna">Ciudad:</label>
+                            <select class="form-control" name="comuna" id="comuna">
+                                <option hidden value="">Seleccione Comuna</option>
+                            </select>
+                        </div>                   
+                        -->
+                        <br><br><br><br>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="crear_tienda" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fin Modal-->
 </body>
+<script type="text/javascript">
+    $( document ).ready(function() {
+          $("#crear_tienda").on("click",function () {
+
+              str = $('#form_crear').serialize();
+              console.log( str );
+              $.ajax({
+                  type: "POST",
+                  url: "tienda/crear",
+                  data: str,
+                  success: function(data) {
+                      alert("success"); 
+                  },
+                  error: function(data) {
+                      alert("error");
+                  }
+              });
+          });            
+      });
+</script>
 </html>
