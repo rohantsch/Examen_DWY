@@ -2,6 +2,8 @@
 <html lang="en-us">
 
 <head>
+    {% load static %}
+    {% load socialaccount %}
     <title>My Costs</title>
     <meta charset="UTF-8">
     <meta name="description" content="">
@@ -38,15 +40,15 @@
     
                                 <div class="title mt-4 mb-8">Bienvenido a My Costs!</div>
     
-                                <form name="loginForm" novalidate>
-    
+                                <form name="loginForm" method="POST" action="/login" novalidate>
+                                    {% csrf_token %}
                                     <div class="form-group mb-4">
-                                        <input type="email" class="form-control" id="loginFormInputEmail" aria-describedby="emailHelp" placeholder="correo@example.cl" />
+                                        <input type="email" name="email" class="form-control" id="loginFormInputEmail" aria-describedby="emailHelp" placeholder="correo@example.cl" />
                                         <label for="loginFormInputEmail">Email</label>
                                     </div>
     
                                     <div class="form-group mb-4">
-                                        <input type="password" class="form-control" id="loginFormInputPassword" placeholder="Contraseña" />
+                                        <input type="password" name="contrasenia" class="form-control" id="loginFormInputPassword" placeholder="Contraseña" />
                                         <label for="loginFormInputPassword">Contraseña</label>
                                     </div>                                        
     
@@ -60,12 +62,12 @@
                                     <span class="text">O También</span>
                                 </div>                                
     
-                                <button type="submit" class="facebook btn btn-block btn-secondary my-2 mx-auto" aria-label="LOG IN">
+                                <a class="facebook btn btn-block btn-secondary my-2 mx-auto" aria-label="LOG IN" href="{% provider_login_url 'facebook' %}" >
                                     <span>
                                         <i class="icon-facebook s-4"></i>
                                         <span>Entrar con Facebook</span>
                                     </span>
-                                </button>
+                                </a>
     
                                 <div class="register d-flex flex-column flex-sm-row align-items-center justify-content-center mt-8 mb-6 mx-auto">
                                     <span class="text mr-sm-2">¿No tienes cuenta?</span>

@@ -57,8 +57,8 @@
 
                                 <div class="description mt-2">Complete el formulario, para crear su cuenta</div>
 
-                                <form name="registerForm" novalidate class="mt-8">
-
+                                <form method="POST" action="/usuario/crear" name="registerForm" novalidate class="mt-8">
+                                    {% csrf_token %}
                                     <div class="form-group mb-4">
                                         <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" />
                                         <label for="registerFormInputName">Nombre</label>
