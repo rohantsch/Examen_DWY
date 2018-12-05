@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import Usuario, Lista
-from django.core import serializers
+from django.http import JsonResponse
 from .models import Tienda
+
 
 # Create your views here.
 
@@ -41,7 +42,8 @@ def cargar(request):
 
 def home(request):
     usuario = request.session.get('usuario',None)
-    return render(request, 'home.html',{'usuario':usuario})
+    listas = Lista.objects.all()
+    return render(request, 'home.html',{'usuario':usuario, 'listas': listas})
 
 def crear_usuario(request):
     nombre = request.POST.get('nombre','')
@@ -71,11 +73,22 @@ def crear_lista(request):
 
     if len(lista) == 0:  
         lista = Lista(usuario=usuario, nombre= nombre, totalPresupuesto = 0, totalProductosComprados= 0, costoTotalPresupuesto= 0, costoTotalReal=0, estado=False)
-        lista.save()
-        return serializers.serialize('json', lista)
+        lista.save()        
+        data = {
+            'mensaje': 'Lista creada, exitosamente!',
+            'type' : 'success',
+            'id_lista': lista.id,
+            'nombre_lista': lista.nombre,
+            'tittle': 'Error!'
+        }
+        return JsonResponse(data, safe=False)
     else:
-        return serializers.serialize('json', lista)
-    return False
+        data = {
+            'mensaje': 'Esta lista, ya ha sido creada',
+            'type' : 'error',
+            'tittle': 'Error!'
+        }
+        return JsonResponse(data,safe=False)    
     
 def tienda(request):
     usuario = request.session.get('usuario',None)

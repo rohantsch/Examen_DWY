@@ -302,25 +302,25 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody>
-
-                                        <tr>
-                                            <td>1</td>
-                                            <td>
-                                                <img class="product-image" src="../static/images/ecommerce/product-image-placeholder.png">
-                                            </td>
-                                            <td>Printed Dress</td>
-                                            <td>Dresses</td>
-                                            <td>10.24</td>
-                                            <td>3</td>
-                                            <td>true</td>
-                                            <td>
-                                                <button type="button" class="btn btn-icon" aria-label="Product details">
-                                                    <i class="icon icon-pencil s-4"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        
+                                    <tbody id="tbody">
+                                        {% for elemento in listas %}
+                                            <tr>
+                                                <td>{{elemento.id}}</td>
+                                                <td>{{elemento.nombre}}</td>
+                                                <td>{{elemento.totalPresupuesto}}</td>
+                                                <td>{{elemento.totalProductosComprados}}</td>
+                                                <td>{{elemento.costoTotalPresupuesto}}</td>
+                                                <td>{{elemento.costoTotalReal}}</td>
+                                                <td>{{elemento.estado}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                        <i class="icon icon-pencil s-4"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                       <!--
+                                        -->
 
                                     </tbody>
                                 </table>
@@ -370,8 +370,9 @@
 </body>
 <script type="text/javascript">
       $( document ).ready(function() {
-            $("#crear_lista").on("click",function () {
 
+            var t = $('#e-commerce-products-table').DataTable();            
+            $("#crear_lista").on("click",function () {
                 str = $('#form_crear').serialize();
                 console.log( str );
                 $.ajax({
@@ -379,7 +380,19 @@
                     url: "listas/crear",
                     data: str,
                     success: function(data) {
-                        alert("success"); 
+                        $('.modal').modal('toggle');
+                        t.row.add( [
+                            data.id_lista,
+                            data.nombre_lista,
+                            0,
+                            0,
+                            0,
+                            0,
+                            'true',
+                            '<button type="button" class="btn btn-icon" aria-label="Product details">' +
+                                '<i class="icon icon-pencil s-4"></i>' +
+                            '</button>',
+                        ] ).draw( true );                        
                     },
                     error: function(data) {
                         alert("error");
