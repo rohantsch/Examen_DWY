@@ -313,15 +313,12 @@
                                                 <td>{{elemento.costoTotalReal}}</td>
                                                 <td>{{elemento.estado}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <button value="{{elemento.id}}|{{elemento.nombre}}" type="button" class="btn btn-icon editar_lista_pencil" data-toggle="modal" data-nombre="{{elemento.nombre}}" data-idlista="{{elemento.id}}" data-target="#editar_modal" aria-label="Product details">
                                                         <i class="icon icon-pencil s-4"></i>
                                                     </button>
                                                 </td>
                                             </tr>
                                         {% endfor %}
-                                       <!--
-                                        -->
-
                                     </tbody>
                                 </table>
                             </div>
@@ -367,6 +364,37 @@
     </div>
     
     <!-- Fin Modal-->
+
+
+    <!-- Modal Editar Lista -->
+
+    <div class="modal fade" id="editar_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar lista</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editar_form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Nombre lista :</label>
+                                <input type="text" id="editar_nombre" name="editar_nombre" class="form-control" id="recipient-name" value="@data-whatever"/>
+                            </div>                        
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" id="editar_lista" class="btn btn-primary">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fin Modal-->
 </body>
 <script type="text/javascript">
       $( document ).ready(function() {
@@ -380,7 +408,7 @@
                     url: "listas/crear",
                     data: str,
                     success: function(data) {
-                        $('.modal').modal('toggle');
+                        $('#exampleModal').modal('toggle');
                         t.row.add( [
                             data.id_lista,
                             data.nombre_lista,
@@ -403,7 +431,13 @@
                         alert("error");
                     }
                 });
-            });            
+            });
+            
+            $(document).on("click", ".editar_lista_pencil", function () {
+                var nombre = $(this).data('nombre');
+                var id = $(this).data('idlist');
+                $("#editar_nombre").val( nombre );           
+            });
         });
 </script>
 </html>
