@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import Usuario
+from .models import Tienda
 
 # Create your views here.
 
@@ -57,3 +58,9 @@ def crear_usuario(request):
             return redirect('index',{'mensaje':'El usuario ingresado ya esta registrado.'})
     else:
         return redirect('index',{'mensaje':'Las contraseñas no coinciden'})
+    
+def tienda(request):
+    usuario = request.session.get('usuario',None)
+    tiendas = Tienda.objects.all()
+    cantidad = len(tiendas)
+    return render(request, 'tienda.html',{'usuario':usuario, 'tiendas':tiendas, 'cantidad':cantidad})
