@@ -170,7 +170,7 @@
 
                                 <span>Ver listas creadas</span>
                             </a>                            
-                        </li>                  
+                        </li>                     
 
                         <li class="subheader">
                             <span>Tiendas</span>
@@ -210,8 +210,8 @@
                                             <i class="icon-cube-outline s-6"></i>
                                         </div>
                                         <div class="logo-text">
-                                            <div class="h4">Listas</div>
-                                            <div class="">Total listas: {{cantidad}}</div>
+                                            <div class="h4">Lista {{lista.nombre}}</div>
+                                            <div class="">Total productos: {{cantidad}}</div>
                                         </div>
                                     </div>
 
@@ -232,7 +232,7 @@
 
                                 </div>
                                 <!-- / SEARCH -->
-                                <button type="button" class="btn mb-4" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar nueva lista
+                                <button type="button" class="btn mb-4" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar producto
                                 </button>
 
                             </div>
@@ -245,43 +245,37 @@
                                         <tr>
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">ID</span>
+                                                    <span class="column-title">Nombre</span>
                                                 </div>
                                             </th>
                                             
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Nombre</span>
+                                                    <span class="column-title">Precio Presupuesto</span>
                                                 </div>
                                             </th>
 
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Total productos</span>
+                                                    <span class="column-title">Precio Real</span>
                                                 </div>
                                             </th>
 
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Total productos comprados</span>
+                                                    <span class="column-title">Observación</span>
                                                 </div>
                                             </th>
 
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Total presupuestado</span>
+                                                    <span class="column-title">Comprado</span>
                                                 </div>
                                             </th>
 
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Total costo real</span>
-                                                </div>
-                                            </th>
-
-                                            <th>
-                                                <div class="table-header">
-                                                    <span class="column-title">Estado</span>
+                                                    <span class="column-title">Tienda</span>
                                                 </div>
                                             </th>
 
@@ -290,19 +284,19 @@
                                                     <span class="column-title">Editar</span>
                                                 </div>
                                             </th>
+
                                         </tr>
                                     </thead>
 
                                     <tbody id="tbody">
-                                        {% for elemento in listas %}
+                                        {% for p in productos %}
                                             <tr>
-                                                <td>{{elemento.id}}</td>
-                                                <td>{{elemento.nombre}}</td>
-                                                <td>{{elemento.totalPresupuesto}}</td>
-                                                <td>{{elemento.totalProductosComprados}}</td>
-                                                <td>{{elemento.costoTotalPresupuesto}}</td>
-                                                <td>{{elemento.costoTotalReal}}</td>
-                                                <td>{{elemento.estado}}</td>
+                                                <td>{{p.nombre}}</td>
+                                                <td>{{p.precioPresupuesto}}</td>
+                                                <td>{{p.precioReal}}</td>
+                                                <td>{{p.observacion}}</td>
+                                                <td>{{p.comprado}}</td>
+                                                <td>{{p.tienda.nombre}}</td>
                                                 <td>
                                                     <button value="{{elemento.id}}|{{elemento.nombre}}" type="button" class="btn btn-icon editar_lista_pencil" data-toggle="modal" data-rowcounter="{{forloop.counter0}}" data-nombre="{{elemento.nombre}}" data-idlista="{{elemento.id}}" data-target="#editar_modal" aria-label="Product details">
                                                         <i class="icon icon-pencil s-4"></i>
@@ -332,7 +326,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Crear lista</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Crear producto</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -341,14 +335,44 @@
                     <form id="form_crear">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Nombre lista :</label>
-                            <input type="text" id="nombre" name="nombre" class="form-control" id="recipient-name" />
-                        </div>                        
+                            <label for="recipient-name" class="form-control-label">Nombre producto:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" />
+                        </div>   
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Precio Presupuesto:</label>
+                            <input type="number" id="precioPresupuesto" name="precioPresupuesto" class="form-control" />
+                        </div>                      
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Precio Real:</label>
+                            <input type="number" id="precioReal" name="precioReal" class="form-control"  />
+                        </div> 
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Observación:</label>
+                            <input type="text" id="observacion" name="observacion" class="form-control" />
+                        </div> 
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Comprado:</label>
+                            <select class="form-control" name="comprado">
+                                <option hidden >Seleccione opción</option>
+                                <option value="True" >Si, está comprado</option>
+                                <option value="False" >No, no está comprado</option>
+                            </select>
+                        </div> 
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Tienda:</label>
+                            <select class="form-control" name="tienda">
+                                <option hidden >Seleccione tienda</option>
+                                {% for p in tiendas %}
+                                    <option value="{{p.nombre}}">{{p.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <input type="hidden" id="crear_id" name="crear_id" value="{{lista.id}}"/>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" id="crear_lista" class="btn btn-primary">Crear</button>
+                    <button type="button" id="crear_producto" class="btn btn-primary">Crear</button>
                 </div>
             </div>
         </div>
@@ -372,10 +396,34 @@
                         <form id="editar_form">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Nombre lista :</label>
-                                <input type="text" id="editar_nombre" name="editar_nombre" class="form-control" />
-                                <input type="hidden" id="editar_id" name="editar_id" class="form-control" value=""/>
-                                <input type="hidden" id="hidden_row_number" name="hidden_row_number" class="form-control" value=""/>
+                                <label for="recipient-name" class="form-control-label">Nombre producto:</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" />
+                            </div>   
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Precio Presupuesto:</label>
+                                <input type="number" id="precioPresupuesto" name="precioPresupuesto" class="form-control" />
+                            </div>                      
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Precio Real:</label>
+                                <input type="number" id="precioReal" name="precioReal" class="form-control"  />
+                            </div> 
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Observación:</label>
+                                <input type="text" id="observacion" name="observacion" class="form-control" />
+                            </div> 
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Comprado:</label>
+                                <input type="text" id="comprado" name="comprado" class="form-control" />
+                            </div> 
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">Tienda:</label>
+                                <select class="form-control" name="tienda">
+                                    <option hidden >Seleccione tienda</option>
+                                    {% for p in tiendas %}
+                                        <option value="{{p}}">{{p.nombre}}</option>
+                                    {% endfor %}
+                                </select>
+                                    
                             </div>                        
                         </form>
                     </div>
@@ -387,8 +435,7 @@
             </div>
         </div>
         
-    <!-- Fin Modal-->
-    
+        <!-- Fin Modal-->
 </body>
 <script type="text/javascript">
       $( document ).ready(function() {
@@ -396,31 +443,30 @@
           var id_lista = 0;
 
             var t = $('#e-commerce-products-table').DataTable();            
-            $("#crear_lista").on("click",function () {
+            $("#crear_producto").on("click",function () {
                 str = $('#form_crear').serialize();
                 console.log( str );
                 $.ajax({
                     type: "POST",
-                    url: "listas/crear",
+                    url: "/producto/crear/" + $("#crear_id").val() ,
                     data: str,
                     success: function(data) {
                         $('#exampleModal').modal('toggle');
                         t.row.add( [
-                            data.id_lista,
-                            data.nombre_lista,
-                            0,
-                            0,
-                            0,
-                            0,
-                            'true',
+                            data.nombre,
+                            data.precioPresupuesto,
+                            data.precioReal,
+                            data.observacion,
+                            data.comprado,
+                            data.tienda,
                             '<button type="button" class="btn btn-icon" aria-label="Product details">' +
                                 '<i class="icon icon-pencil s-4"></i>' +
                             '</button>',
                         ] ).draw( true );  
                         
                         PNotify.success({
-                            title: 'Lista creada!',
-                            text: 'Su lista, a sido creada correctamente.'
+                            title: data.tittle,
+                            text: data.mensaje
                         });
                     },
                     error: function(data) {

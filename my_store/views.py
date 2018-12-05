@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .models import Usuario, Lista
+from .models import Usuario, Lista, Tienda, Producto
 from django.http import JsonResponse
-from .models import Tienda
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
@@ -221,3 +220,47 @@ def cerrar_session(request):
     else:
         auth_logout(request)
         return redirect('index')
+
+def producto(request, id):
+    usuario = request.session.get('usuario',None)
+    producto = Producto.objects.filter(lista_id = id)
+    lista = Lista.objects.get(pk=id)
+    tiendas = Tienda.objects.all()
+    cantidad = len(producto)
+    return render(request, 'producto.html',{'usuario':usuario, 'cantidad':cantidad, 'productos':producto, 'lista':lista, 'tiendas':tiendas})
+
+def crear_producto(request, id):
+
+    nombre = request.POST.get('nombre','')
+    precioPresupuesto = request.POST.get('precioPresupuesto','')
+    precioReal = request.POST.get('precioReal','')
+    observacion = request.POST.get('observacion','')
+    comprado = request.POST.get('comprado','')
+    tiendax = request.POST.get('tienda','')
+
+    lista = Lista.objects.get(pk=id)
+    tienda = Tienda.objects.get(nombre=tiendax)
+    producto = Producto.objects.filter(nombre=nombre)
+
+    if len(producto) == 0:  
+        producto = Producto(nombre=nombre, precioPresupuesto=precioPresupuesto, precioReal=precioReal, observacion=observacion, comprado=comprado, tienda=tienda, lista=lista)
+        producto.save()
+        data = {
+            'mensaje': 'Producto creago, exitosamente!',
+            'type' : 'success',
+            'tittle': 'Registro producto!',
+            'nombre': producto.nombre,
+            'precioPresupuesto': producto.precioPresupuesto,
+            'precioReal': producto.precioReal,
+            'observacion': producto.observacion,
+            'comprado': producto.comprado,
+            'tienda': tienda.nombre,
+        }
+        return JsonResponse(data, safe=False)
+    else:
+        data = {
+            'mensaje': 'El producto ya existe!',
+            'type' : 'error',
+            'tittle': 'Registro producto!'
+        }
+        return JsonResponse(data,safe=False) 
