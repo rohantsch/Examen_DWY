@@ -57,7 +57,7 @@
 
                                 <div class="description mt-2">Complete el formulario, para crear su cuenta</div>
 
-                                <form method="POST" action="/usuario/crear" name="registerForm" novalidate class="mt-8">
+                                <form method="POST" action="/usuario/crear" id="form_crear" name="registerForm" novalidate class="mt-8">
                                     {% csrf_token %}
                                     <div class="form-group mb-4">
                                         <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" />
@@ -79,7 +79,7 @@
                                         <label for="registerFormInputPasswordConfirm">Contraseña (Confirmar)</label>
                                     </div>
 
-                                    <button type="submit" class="submit-button btn btn-block btn-secondary my-4 mx-auto" aria-label="LOG IN">
+                                    <button type="submit" id="crear_usuario" class="submit-button btn btn-block btn-secondary my-4 mx-auto" aria-label="LOG IN">
                                         CREAR MI CUENTA
                                     </button>
 
@@ -112,5 +112,33 @@
     <script type="text/javascript" src="../static/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Fuse Html -->
     <script type="text/javascript" src="../static/fuse-html/fuse-html.min.js"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+  
+            $("#crear_usuario").on("click",function () {
+                str = $('#form_crear').serialize();
+                console.log( str );
+                $.ajax({
+                    type: "POST",
+                    url: "usuario/crear",
+                    data: str,
+                    success: function(data) {
+                        PNotify.success({
+                            title: data.tittle,
+                            text: data.mensaje
+                        });
+                    },
+                    error: function(data) {
+                        PNotify.error({
+                            title: data.tittle,
+                            text: data.mensaje
+                        });
+                    }
+                });
+            });
 
+
+            
+        });
+  </script>
 </html>

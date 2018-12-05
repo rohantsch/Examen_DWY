@@ -39,6 +39,7 @@ DJANGO_APPS  = (
     'django.contrib.staticfiles',
     
     'django.contrib.sites',
+    'social_django',
 )
 
 #Api Social Login
@@ -71,7 +72,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'examen_dwy.urls'
@@ -86,7 +89,10 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages'
+                'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -126,6 +132,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #Api Social Login
 AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
@@ -184,4 +194,8 @@ SOCIAL_AUTH_GITHUB_KEY = 'c8c468954145637384e5'
 SOCIAL_AUTH_GITHUB_SECRET = '4beb343edc8cbead117e4fdf2ae3362ffbd87672'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '2114292178834890'
-SOCIAL_AUTH_FACEBOOK_SECRET = '8f4a4c0c1ecbd8fa6601d5e0199d2787' 
+SOCIAL_AUTH_FACEBOOK_SECRET = '8f4a4c0c1ecbd8fa6601d5e0199d2787'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'

@@ -5,6 +5,10 @@ from .models import Usuario, Lista
 from django.http import JsonResponse
 from .models import Tienda
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as auth_logout
+from social_django.models import UserSocialAuth
+
 
 # Create your views here.
 
@@ -40,6 +44,7 @@ def login(request):
 def cargar(request):
     return redirect('home')
 
+
 def home(request):
     usuario = request.session.get('usuario',None)
     id = request.session.get('id',None)
@@ -58,11 +63,26 @@ def crear_usuario(request):
         if len(usuario) == 0:  
             usuario = Usuario(nombre=nombre, email=email, contrasenia= contrasenia)
             usuario.save()
-            return redirect('index')
+            data = { 
+                'mensaje': 'Usuario registrado!', 
+                'type' : 'success', 
+                'tittle': 'Registro Usuario',
+            } 
+            return JsonResponse(data,safe=False)
         else:
-            return redirect('index',{'mensaje':'El usuario ingresado ya esta registrado.'})
+            data = { 
+                'mensaje': 'El usuario ingresado ya esta registrado.', 
+                'type' : 'warning', 
+                'tittle': 'Registro Usuario',
+            } 
+            return JsonResponse(data,safe=False)
     else:
-        return redirect('index',{'mensaje':'Las contraseñas no coinciden'})
+        data = { 
+                'mensaje': 'Las contraseñas no coinciden', 
+                'type' : 'error', 
+                'tittle': 'Registro Usuario',
+            } 
+        return JsonResponse(data,safe=False)
 
 def crear_lista(request):
 
@@ -190,5 +210,14 @@ def tienda(request):
     return render(request, 'tienda.html',{'usuario':usuario, 'tiendas':tiendas, 'cantidad':cantidad})
 
 def cerrar_session(request):
-    del request.session['usuario']
-    return redirect('index')
+    user = request.user
+    if user is None:
+        usuario = request.session.get('usuario',None)
+        if usuario is None:
+            return redirect('home')
+        else:
+            del request.session['usuario']
+            return redirect('index')
+    else:
+        auth_logout(request)
+        return redirect('index')
