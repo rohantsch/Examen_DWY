@@ -13,4 +13,8 @@ urlpatterns = [
     path('accounts/profile/', views.cargar, name= "cargar"),
 
     path('usuario/crear', views.crear_usuario, name = "crear_usuario"),
+
+
+    #MODULO LISTAS
+    path('listas/crear', views.crear_lista, name="crear_lista"),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
