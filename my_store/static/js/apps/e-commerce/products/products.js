@@ -152,7 +152,7 @@
                     },
                     {
                         // Target the actions column
-                        targets           : 7,
+                        targets           :6,
                         responsivePriority: 1,
                         filterable        : false,
                         sortable          : false
@@ -186,19 +186,7 @@
                         filterable: false,
                         sortable  : false,
                         width     : '80px'
-                    },
-                    {
-                        // Target the price column
-                        targets: 4,
-                        render : function (data, type) {
-                            if ( type === 'display' )
-                            {
-                                return '<div class="layout-align-start-start layout-row">' + '<i class="s-4 icon-currency-usd text-muted"></i>' + '<span>' + data + '</span>' + '</div>';
-                            }
-
-                            return data;
-                        }
-                    },                    
+                    },                                      
                     {
                         // Target the status column
                         targets   : 5,
@@ -229,7 +217,7 @@
                     },
                     {
                         // Target the actions column
-                        targets           : 7,
+                        targets           : 6,
                         responsivePriority: 1,
                         filterable        : false,
                         sortable          : false

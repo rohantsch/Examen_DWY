@@ -394,7 +394,7 @@
 </body>
 <script type="text/javascript">
     $( document ).ready(function() {
-        var t = $('#e-commerce-products-table').DataTable();            
+        var t = $('#table-tiendas').DataTable();            
         $("#crear_tienda").on("click",function () {
             str = $('#form_crear').serialize();
             $.ajax({
@@ -409,7 +409,7 @@
                         data.direccion,
                         data.region,
                         data.ciudad,
-                        'true',
+                        'false',
                         '<button type="button" class="btn btn-icon" aria-label="Product details">' +
                             '<i class="icon icon-pencil s-4"></i>' +
                         '</button>',
