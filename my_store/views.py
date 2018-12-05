@@ -79,7 +79,7 @@ def crear_lista(request):
             'type' : 'success',
             'id_lista': lista.id,
             'nombre_lista': lista.nombre,
-            'tittle': 'Error!'
+            'tittle': 'Creado!'
         }
         return JsonResponse(data, safe=False)
     else:
@@ -88,23 +88,39 @@ def crear_lista(request):
             'type' : 'error',
             'tittle': 'Error!'
         }
-        return JsonResponse(data,safe=False)    
+        return JsonResponse(data,safe=False)   
+
 def crear_tienda(request):
 
     nombre = request.POST.get('nombre','')
     nombreSucursal = request.POST.get('nombreSucursal','')
     direccion = request.POST.get('direccion','')
     region = request.POST.get('region','')
-    comuna = request.POST.get('comuna','')
+    ciudad = request.POST.get('comuna','')
 
     tienda = Tienda.objects.filter(nombre=nombre)
 
-    if len(lista) == 0:  
-        tienda = Tienda(nombre=nombre, nombreSucursal=nombreSucursal, direccion=direccion, region=region, comuna=comuna, estado=False)
+    if len(tienda) == 0:  
+        tienda = Tienda(nombre=nombre, nombreSucursal=nombreSucursal, direccion=direccion, region=region, ciudad=ciudad, estado=False)
         tienda.save()
-        return redirect('tienda')
+        data = {
+            'mensaje': 'Tienda creada, exitosamente!',
+            'type' : 'success',
+            'nombre': tienda.nombre,
+            'nombreSucursal': tienda.nombreSucursal,
+            'direccion': tienda.direccion,
+            'region': tienda.region,
+            'ciudad': tienda.ciudad,
+            'tittle': 'Creado!'
+        }
+        return JsonResponse(data, safe=False)
     else:
-        return redirect('tienda',{'mensaje':'La tiena ya existe'})
+        data = {
+            'mensaje': 'Esta tienda, ya existe!',
+            'type' : 'error',
+            'tittle': 'Error!'
+        }
+        return JsonResponse(data,safe=False) 
 
     
 def tienda(request):

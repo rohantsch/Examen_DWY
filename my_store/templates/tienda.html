@@ -251,7 +251,7 @@
 
                             <div class="page-content-card">
 
-                                <table id="e-commerce-products-table" class="table dataTable">
+                                <table id="table-tiendas" class="table dataTable">
                                     <thead>
                                         <tr>
                                             <th>
@@ -274,13 +274,13 @@
 
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Ciudad</span>
+                                                    <span class="column-title">Región</span>
                                                 </div>
                                             </th>
 
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Región</span>
+                                                    <span class="column-title">Ciudad</span>
                                                 </div>
                                             </th>
 
@@ -306,7 +306,7 @@
                                                 <td>{{p.nombreSucursal}}</td>
                                                 <td>{{p.direccion}}</td>
                                                 <td>{{p.region}}</td>
-                                                <td>{{p.comuna}}</td>
+                                                <td>{{p.ciudad}}</td>
                                                 <td>{{p.estado}}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-icon" aria-label="Product details">
@@ -394,22 +394,32 @@
 </body>
 <script type="text/javascript">
     $( document ).ready(function() {
-          $("#crear_tienda").on("click",function () {
-
-              str = $('#form_crear').serialize();
-              console.log( str );
-              $.ajax({
-                  type: "POST",
-                  url: "tienda/crear",
-                  data: str,
-                  success: function(data) {
-                      alert("success"); 
-                  },
-                  error: function(data) {
-                      alert("error");
-                  }
-              });
-          });            
+        var t = $('#e-commerce-products-table').DataTable();            
+        $("#crear_tienda").on("click",function () {
+            str = $('#form_crear').serialize();
+            $.ajax({
+                type: "POST",
+                url: "tienda/crear",
+                data: str,
+                success: function(data) {
+                    $('.modal').modal('toggle');
+                    t.row.add( [
+                        data.nombre,
+                        data.nombreSucursal,
+                        data.direccion,
+                        data.region,
+                        data.ciudad,
+                        'true',
+                        '<button type="button" class="btn btn-icon" aria-label="Product details">' +
+                            '<i class="icon icon-pencil s-4"></i>' +
+                        '</button>',
+                    ] ).draw( true );                        
+                },
+                error: function(data) {
+                    alert("error");
+                }
+            });
+        });           
       });
 </script>
 </html>
