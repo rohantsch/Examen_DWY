@@ -19,4 +19,5 @@ urlpatterns = [
 
     #MODULO LISTAS
     path('listas/crear', views.crear_lista, name="crear_lista"),
+    path('listas/editar/<int:id>', views.editar_lista, name="editar_lista"),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
