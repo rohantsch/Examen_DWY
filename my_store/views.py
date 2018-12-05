@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .models import Usuario
+from .models import Usuario, Lista
+from django.core import serializers
 from .models import Tienda
 
 # Create your views here.
@@ -58,6 +59,23 @@ def crear_usuario(request):
             return redirect('index',{'mensaje':'El usuario ingresado ya esta registrado.'})
     else:
         return redirect('index',{'mensaje':'Las contraseñas no coinciden'})
+
+def crear_lista(request):
+
+    nombre = request.POST.get('nombre','')
+
+    id = request.session.get('id',None)
+    usuario = Usuario.objects.get(pk=id)
+
+    lista = Lista.objects.filter(nombre=nombre, usuario=usuario)
+
+    if len(lista) == 0:  
+        lista = Lista(usuario=usuario, nombre= nombre, totalPresupuesto = 0, totalProductosComprados= 0, costoTotalPresupuesto= 0, costoTotalReal=0, estado=False)
+        lista.save()
+        return serializers.serialize('json', lista)
+    else:
+        return serializers.serialize('json', lista)
+    return False
     
 def tienda(request):
     usuario = request.session.get('usuario',None)
