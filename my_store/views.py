@@ -42,8 +42,10 @@ def cargar(request):
 
 def home(request):
     usuario = request.session.get('usuario',None)
-    listas = Lista.objects.all()
-    return render(request, 'home.html',{'usuario':usuario, 'listas': listas})
+    id = request.session.get('id',None)
+    listas = Lista.objects.all().filter(usuario_id=id)
+    cantidad = len(listas)
+    return render(request, 'home.html',{'usuario':usuario, 'listas': listas, 'cantidad':cantidad})
 
 def crear_usuario(request):
     nombre = request.POST.get('nombre','')
@@ -88,7 +90,7 @@ def crear_lista(request):
             'type' : 'error',
             'tittle': 'Error!'
         }
-        return JsonResponse(data,safe=False)
+        return JsonResponse(data,safe=False)  
 
 def editar_lista(request, id):
     nombre = request.POST.get('editar_nombre','')
@@ -135,6 +137,7 @@ def crear_tienda(request):
             'direccion': tienda.direccion,
             'region': tienda.region,
             'ciudad': tienda.ciudad,
+            'estado': tienda.estado,
             'tittle': 'Creado!'
         }
         return JsonResponse(data, safe=False)
@@ -147,21 +150,37 @@ def crear_tienda(request):
         return JsonResponse(data,safe=False) 
 
 def editar_tienda(request,id):
-    perro = Perro.objects.get(pk=id)
+    row_number = request.POST.get('hidden_row_number','')
 
-    foto = request.FILES.get('foto',False)
-    nombre = request.POST.get('nombre','')
-    raza = request.POST.get('raza','')
-    descripcion = request.POST.get('descripcion','')
-    estado = request.POST.get('estado','')
+    nombre = request.POST.get('nombre2','')
+    nombreSucursal = request.POST.get('nombreSucursal2','')
+    direccion = request.POST.get('direccion2','')
+    region = request.POST.get('region2','')
+    ciudad = request.POST.get('comuna2','')
 
-    perro.foto = foto
-    perro.nombre = nombre
-    perro.raza = raza
-    perro.descripcion = descripcion
-    perro.estado = estado
-    perro.save()
-    return redirect('index')
+    tienda = Tienda.objects.get(pk=id)
+
+    tienda.nombre = nombre
+    tienda.nombreSucursal = nombreSucursal
+    tienda.direccion = direccion
+    tienda.region = region  
+    tienda.ciudad = ciudad
+    
+    tienda.save()
+
+    data = {
+        'mensaje': 'Tienda editada, exitosamente!',
+        'type' : 'success',
+        'tittle': 'Editar lista',
+        'nombre': tienda.nombre,
+        'nombreSucursal': tienda.nombreSucursal,
+        'direccion': tienda.direccion,
+        'region': tienda.region,
+        'ciudad': tienda.ciudad,
+        'estado': tienda.estado,
+        'row_number': row_number
+    }
+    return JsonResponse(data)
 
     
 def tienda(request):
@@ -169,3 +188,7 @@ def tienda(request):
     tiendas = Tienda.objects.all()
     cantidad = len(tiendas)
     return render(request, 'tienda.html',{'usuario':usuario, 'tiendas':tiendas, 'cantidad':cantidad})
+
+def cerrar_session(request):
+    del request.session['usuario']
+    return redirect('index')

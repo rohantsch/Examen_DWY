@@ -310,7 +310,8 @@
                                                 <td>{{p.estado}}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-icon editar_tienda_pencil" data-toggle="modal"  aria-label="Product details"
-                                                        data-id="{{p.id}}" data-nombre="{{p.nombre}}" data-sucursal="{{p.nombreSucursal}}" data-direccion="{{p.direccion}}" data-region="{{p.region}}" data-ciudad="{{p.ciudad}}"  data-target="#editar_modal">
+                                                        data-id="{{p.id}}" data-nombre="{{p.nombre}}" data-sucursal="{{p.nombreSucursal}}" data-direccion="{{p.direccion}}" 
+                                                        data-rowcounter="{{forloop.counter0}}" data-region="{{p.region}}" data-ciudad="{{p.ciudad}}"  data-target="#editar_modal">
                                                         <i class="icon icon-pencil s-4"></i>
                                                     </button>
                                                 </td>
@@ -440,6 +441,8 @@
                             </select>
                         </div>                   
                         -->
+                        <input type="hidden" id="editar_id" name="editar_id" class="form-control" value=""/>
+                        <input type="hidden" id="hidden_row_number" name="hidden_row_number" class="form-control" value=""/>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -489,21 +492,28 @@
             str = $('#form_editar').serialize();
             $.ajax({
                 type: "POST",
-                url: "tienda/editar",
+                url: "tienda/editar/" +  $("#editar_id").val(),
                 data: str,
                 success: function(data) {
                     $('#editar_modal').modal('toggle');
-                    t.row.add( [
+                    var estado = 'False';
+                    if(data.estado){
+                        estado = 'True';
+                    }
+                    var temp = 
+                    [
                         data.nombre,
                         data.nombreSucursal,
                         data.direccion,
                         data.region,
                         data.ciudad,
-                        'false',
+                        estado,
                         '<button type="button" class="btn btn-icon" aria-label="Product details">' +
                             '<i class="icon icon-pencil s-4"></i>' +
                         '</button>',
-                    ] ).draw( true ); 
+                    ];
+                    t.row(data.row_number).data(temp).draw();
+
                     PNotify.success({
                         title: 'Tienda editada!',
                         text: 'Su tienda, a sido editada correctamente.'
@@ -521,14 +531,16 @@
             var direccion = $(this).data('direccion');
             var region = $(this).data('region');
             var ciudad = $(this).data('ciudad');
-            var id = $(this).data('id');
-            
+            var id_tienda = $(this).data('id');
+            var row_number = $(this).data('rowcounter');
+
             $("#nombre2").val( nombre );           
             $("#nombreSucursal2").val( nombreSucursal );           
             $("#direccion2").val( direccion );           
             $("#region2").val( region );           
             $("#comuna2").val( ciudad );           
-            
+            $("#editar_id").val(id_tienda);
+            $("#hidden_row_number").val(row_number);
         });         
       });
 </script>
