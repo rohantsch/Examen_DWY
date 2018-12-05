@@ -122,6 +122,23 @@ def crear_tienda(request):
         }
         return JsonResponse(data,safe=False) 
 
+def editar_tienda(request,id):
+    perro = Perro.objects.get(pk=id)
+
+    foto = request.FILES.get('foto',False)
+    nombre = request.POST.get('nombre','')
+    raza = request.POST.get('raza','')
+    descripcion = request.POST.get('descripcion','')
+    estado = request.POST.get('estado','')
+
+    perro.foto = foto
+    perro.nombre = nombre
+    perro.raza = raza
+    perro.descripcion = descripcion
+    perro.estado = estado
+    perro.save()
+    return redirect('index')
+
     
 def tienda(request):
     usuario = request.session.get('usuario',None)

@@ -309,7 +309,8 @@
                                                 <td>{{p.ciudad}}</td>
                                                 <td>{{p.estado}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-icon" aria-label="Product details">
+                                                    <button type="button" class="btn btn-icon editar_tienda_pencil" data-toggle="modal"  aria-label="Product details"
+                                                        data-id="{{p.id}}" data-nombre="{{p.nombre}}" data-sucursal="{{p.nombreSucursal}}" data-direccion="{{p.direccion}}" data-region="{{p.region}}" data-ciudad="{{p.ciudad}}"  data-target="#editar_modal">
                                                         <i class="icon icon-pencil s-4"></i>
                                                     </button>
                                                 </td>
@@ -362,7 +363,7 @@
                             <input type="text" id="region" name="region" class="form-control"  />
                         </div>  
                         <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Comuna:</label>
+                            <label for="recipient-name" class="form-control-label">Ciudad:</label>
                             <input type="text" id="comuna" name="comuna" class="form-control"  />
                         </div>  
                         <!--  
@@ -379,12 +380,71 @@
                             </select>
                         </div>                   
                         -->
-                        <br><br><br><br>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     <button type="button" id="crear_tienda" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fin Modal-->
+
+    <!-- Modal Editar Tienda -->
+
+    <div class="modal fade" id="editar_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar tienda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_editar">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Nombre Tienda:</label>
+                            <input type="text" id="nombre2" name="nombre2" class="form-control"/>
+                        </div>   
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Nombre Sucursal:</label>
+                            <input type="text" id="nombreSucursal2" name="nombreSucursal2" class="form-control" />
+                        </div>    
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Dirección:</label>
+                            <input type="text" id="direccion2" name="direccion2" class="form-control"  />
+                        </div>  
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Región:</label>
+                            <input type="text" id="region2" name="region2" class="form-control"  />
+                        </div>  
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Ciudad:</label>
+                            <input type="text" id="comuna2" name="comuna2" class="form-control"  />
+                        </div>  
+                        <!--  
+                        <div class="form-group">
+                            <label for="region">Región:</label>
+                            <select class="form-control" name="region" id="region">
+                                <option hidden value="">Seleccione Region</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comuna">Ciudad:</label>
+                            <select class="form-control" name="comuna" id="comuna">
+                                <option hidden value="">Seleccione Comuna</option>
+                            </select>
+                        </div>                   
+                        -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="editar_tienda" class="btn btn-primary">Editar</button>
                 </div>
             </div>
         </div>
@@ -402,7 +462,7 @@
                 url: "tienda/crear",
                 data: str,
                 success: function(data) {
-                    $('.modal').modal('toggle');
+                    $('#exampleModalLabel').modal('toggle');
                     t.row.add( [
                         data.nombre,
                         data.nombreSucursal,
@@ -413,13 +473,63 @@
                         '<button type="button" class="btn btn-icon" aria-label="Product details">' +
                             '<i class="icon icon-pencil s-4"></i>' +
                         '</button>',
-                    ] ).draw( true );                        
+                    ] ).draw( true ); 
+                    PNotify.success({
+                        title: 'Tienda creada!',
+                        text: 'Su tienda, a sido creada correctamente.'
+                    });                       
                 },
                 error: function(data) {
                     alert("error");
                 }
             });
-        });           
+        });  
+
+        $("#editar_tienda").on("click",function () {
+            str = $('#form_editar').serialize();
+            $.ajax({
+                type: "POST",
+                url: "tienda/editar",
+                data: str,
+                success: function(data) {
+                    $('#editar_modal').modal('toggle');
+                    t.row.add( [
+                        data.nombre,
+                        data.nombreSucursal,
+                        data.direccion,
+                        data.region,
+                        data.ciudad,
+                        'false',
+                        '<button type="button" class="btn btn-icon" aria-label="Product details">' +
+                            '<i class="icon icon-pencil s-4"></i>' +
+                        '</button>',
+                    ] ).draw( true ); 
+                    PNotify.success({
+                        title: 'Tienda editada!',
+                        text: 'Su tienda, a sido editada correctamente.'
+                    });                       
+                },
+                error: function(data) {
+                    alert("error");
+                }
+            });
+        });  
+
+        $(document).on("click", ".editar_tienda_pencil", function () {
+            var nombre = $(this).data('nombre');
+            var nombreSucursal = $(this).data('sucursal');
+            var direccion = $(this).data('direccion');
+            var region = $(this).data('region');
+            var ciudad = $(this).data('ciudad');
+            var id = $(this).data('id');
+            
+            $("#nombre2").val( nombre );           
+            $("#nombreSucursal2").val( nombreSucursal );           
+            $("#direccion2").val( direccion );           
+            $("#region2").val( region );           
+            $("#comuna2").val( ciudad );           
+            
+        });         
       });
 </script>
 </html>
