@@ -392,7 +392,12 @@
                             '<button type="button" class="btn btn-icon" aria-label="Product details">' +
                                 '<i class="icon icon-pencil s-4"></i>' +
                             '</button>',
-                        ] ).draw( true );                        
+                        ] ).draw( true );  
+                        
+                        PNotify.success({
+                            title: 'Lista creada!',
+                            text: 'Su lista, a sido creada correctamente.'
+                        });
                     },
                     error: function(data) {
                         alert("error");
