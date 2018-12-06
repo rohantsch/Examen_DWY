@@ -30,4 +30,6 @@ urlpatterns = [
 
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     
+    #PWA
+    path('', include('pwa.urls')),
 ] 

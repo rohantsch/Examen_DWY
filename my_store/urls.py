@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 from django.conf import settings 
 from django.conf.urls import url, include
 
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('', views.index, name="index"),
@@ -29,4 +31,7 @@ urlpatterns = [
     path('producto/<int:id>', views.producto, name="producto"),
     path('producto/crear/<int:id>', views.crear_producto, name="crear_producto"),
     path('producto/editar/<int:id>', views.editar_producto, name="editar_producto"),
+
+    #MANIFEST
+    url(r'^manifest.json', (TemplateView.as_view(template_name="manifest.json", content_type='application/json', )), name='manifest.json'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
