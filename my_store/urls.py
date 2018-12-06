@@ -21,11 +21,13 @@ urlpatterns = [
     #MODULO LISTAS
     path('listas/crear', views.crear_lista, name="crear_lista"),
     path('listas/editar/<int:id>', views.editar_lista, name="editar_lista"),
+    path('listas/cerrar/<int:id>', views.cerrar_lista, name="cerrar_lista"),
 
     #MODULO TIENDAS
     path('tienda', views.tienda, name="tienda"),
     path('tienda/crear', views.crear_tienda, name="crear_tienda"),
     path('tienda/editar/<int:id>', views.editar_tienda, name="editar_tienda"),
+    path('tienda/aprobar/<int:id>', views.aprobar_tienda, name="aprobar_tienda"),
 
     #MODULO PRODUCTO
     path('producto/<int:id>', views.producto, name="producto"),

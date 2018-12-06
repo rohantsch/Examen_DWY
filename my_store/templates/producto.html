@@ -116,7 +116,13 @@
                                     <img class="avatar" src="../static/images/avatars/profile.jpg">
                                     <i class="status text-green icon-checkbox-marked-circle s-4"></i>
                                 </div>
-                                <span class="username mx-3 d-none d-md-block">{{user.username}}{{usuario}}</span>
+                                <span class="username mx-3 d-none d-md-block">
+                                        {% if request.user.is_staff %}
+                                        Admin {{usuario}}
+                                        {% else %}
+                                            {{user.username}}{{usuario}}
+                                        {% endif %}
+                                </span>
                             </div>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownUserMenu">
@@ -168,7 +174,7 @@
                         </li>
 
                         <li class="nav-item" role="tab" id="heading-dashboards">
-                            <a class="nav-link ripple" data-toggle="collapse" data-target="#collapse-dashboards" href="#" aria-expanded="false" aria-controls="collapse-dashboards">
+                            <a class="nav-link ripple" href="/home" aria-expanded="false" aria-controls="collapse-dashboards">
 
                                 <i class="icon s-4 icon-view-list"></i>
 
@@ -235,16 +241,29 @@
                                     </div>
 
                                 </div>
+
+                                {% if lista.estado %}
+                                    <!-- / SEARCH -->
+                                    <button type="button" class="btn mb-4" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar producto
+                                    </button>
+                                    <span> &nbsp;&nbsp;&nbsp;&nbsp; </span>
+                                    <button type="button" class="btn btn-info mb-4" data-toggle="modal" data-target="#finalizar_modal" data-whatever="@mdo">Finalizar Lista
+                                    </button>
+                            {% else %}                                            
                                 <!-- / SEARCH -->
-                                <button type="button" class="btn mb-4" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar producto
+                                <button disabled type="button" class="btn mb-4" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar producto
                                 </button>
+                                <span> &nbsp;&nbsp;&nbsp;&nbsp; </span>
+                                <button disabled type="button" class="btn btn-info mb-4" data-toggle="modal" data-target="#finalizar_modal" data-whatever="@mdo">Finalizar Lista
+                                </button>
+                            {% endif %}                                 
 
                             </div>
                             <!-- / HEADER -->                            
 
                             <div class="page-content-card">
 
-                                <table id="e-commerce-products-table" class="table dataTable">
+                                <table id="table-productos" class="table dataTable">
                                     <thead>
                                         <tr>
                                             <th>
@@ -301,13 +320,25 @@
                                                 <td>{{p.observacion}}</td>
                                                 <td>{{p.comprado}}</td>
                                                 <td>{{p.tienda.nombre}}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-icon editar_producto_pencil" data-toggle="modal" data-target="#editar_modal" aria-label="Product details"
-                                                    data-rowcounter="{{forloop.counter0}}" data-nombre="{{p.nombre}}" data-precio_presupuesto="{{p.precioPresupuesto}}" data-precio_real="{{p.precioReal}}" 
-                                                    data-observacion="{{p.observacion}}" data-comprado="{{p.comprado}}" data-nombre_tienda="{{p.tienda.nombre}}" data-id="{{p.id}}">
-                                                        <i class="icon icon-pencil s-4"></i>
-                                                    </button>
-                                                </td>
+
+                                                {% if lista.estado %}
+                                                    <td>
+                                                        <button type="button" class="btn btn-icon editar_producto_pencil" data-toggle="modal" data-target="#editar_modal" aria-label="Product details"
+                                                        data-rowcounter="{{forloop.counter0}}" data-nombre="{{p.nombre}}" data-precio_presupuesto="{{p.precioPresupuesto}}" data-precio_real="{{p.precioReal}}" 
+                                                        data-observacion="{{p.observacion}}" data-comprado="{{p.comprado}}" data-nombre_tienda="{{p.tienda.nombre}}" data-id="{{p.id}}">
+                                                            <i class="icon icon-pencil s-4"></i>
+                                                        </button>
+                                                    </td>
+                                                {% else %}                                            
+                                                    <td>
+                                                        <button disabled type="button" class="btn btn-icon editar_producto_pencil" data-toggle="modal" data-target="#editar_modal" aria-label="Product details"
+                                                        data-rowcounter="{{forloop.counter0}}" data-nombre="{{p.nombre}}" data-precio_presupuesto="{{p.precioPresupuesto}}" data-precio_real="{{p.precioReal}}" 
+                                                        data-observacion="{{p.observacion}}" data-comprado="{{p.comprado}}" data-nombre_tienda="{{p.tienda.nombre}}" data-id="{{p.id}}">
+                                                            <i class="icon icon-pencil s-4"></i>
+                                                        </button>
+                                                    </td>
+                                                {% endif %} 
+                                                
                                             </tr>
                                         {% endfor %}
                                     </tbody>
@@ -446,12 +477,40 @@
     </div>
     
     <!-- Fin Modal-->
+
+
+    <!-- Finalizar Modal -->
+    <div id="finalizar_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLiveLabel">Estimado usuario</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <input id="id_lista" name="id_lista" type="hidden" value="{{lista.id}}"/>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Desea finalizar su Lista?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="cerrar_form">
+                            {% csrf_token %}
+                            <input id="id_lista" name="id_lista" type="hidden" value="{{lista.id}}"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button id="cerrar_lista" type="button" class="btn btn-info">Confirmar</button>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Fin Modal-->
     
 </body>
 <script type="text/javascript">
       $( document ).ready(function() {
 
-            var t = $('#e-commerce-products-table').DataTable();            
+            var t = $('#table-productos').DataTable();            
             $("#crear_producto").on("click",function () {
                 str = $('#form_crear').serialize();
                 console.log( str );
@@ -484,6 +543,34 @@
                 });
             });
 
+            $("#cerrar_lista").on("click",function () {                                        
+
+                $.ajax({
+                    type: "POST",
+                    url: "/listas/cerrar/" +  $("#id_lista").val(),
+                    data: $('#cerrar_form').serialize(),
+                    success: function(data) {
+                        $('#finalizar_modal').modal('toggle');
+
+                        PNotify.success({
+                            title: data.tittle,
+                            text: data.mensaje
+                        });
+
+                        setTimeout(function(){
+                            window.location.href = "/home";
+                        }, 1000);
+                        
+
+                        
+                    },
+                    error: function(data) {
+                        alert("error");
+                    }
+                });
+            
+
+            });
 
             $("#editar_producto").on("click",function () {
                 str = $('#editar_form').serialize();

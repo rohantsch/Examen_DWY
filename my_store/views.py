@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import Usuario, Lista, Tienda, Producto
 from django.http import JsonResponse
+from django.db.models import Sum
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
@@ -150,6 +151,21 @@ def editar_lista(request, id):
         
     return JsonResponse(data)
 
+
+def cerrar_lista(request, id):
+
+    lista = Lista.objects.get(pk=id)
+    lista.estado = False
+    lista.save()
+
+    data = { 
+        'mensaje': 'Lista cerrada!', 
+        'type' : 'success', 
+        'tittle': 'Editar lista'
+    } 
+        
+    return JsonResponse(data)
+
 def crear_tienda(request):
 
     nombre = request.POST.get('nombre','')
@@ -216,6 +232,19 @@ def editar_tienda(request,id):
     }
     return JsonResponse(data)
 
+def aprobar_tienda(request, id):
+
+    tienda = Tienda.objects.get(pk=id)
+    tienda.estado = True
+    tienda.save()
+
+    data = { 
+        'mensaje': 'Lista aprobada!', 
+        'type' : 'success', 
+        'tittle': 'Aprobar tienda'
+    } 
+        
+    return JsonResponse(data)
     
 def tienda(request):
     usuario = request.session.get('usuario',None)
@@ -240,7 +269,7 @@ def producto(request, id):
     usuario = request.session.get('usuario',None)
     producto = Producto.objects.filter(lista_id = id)
     lista = Lista.objects.get(pk=id)
-    tiendas = Tienda.objects.all()
+    tiendas = Tienda.objects.all().filter(estado = True)
     cantidad = len(producto)
     return render(request, 'producto.html',{'usuario':usuario, 'cantidad':cantidad, 'productos':producto, 'lista':lista, 'tiendas':tiendas})
 
@@ -260,8 +289,9 @@ def crear_producto(request, id):
     if len(producto) == 0:  
         producto = Producto(nombre=nombre, precioPresupuesto=precioPresupuesto, precioReal=precioReal, observacion=observacion, comprado=comprado, tienda=tienda, lista=lista)
         producto.save()
+        actualizarLista(producto.lista.id)
         data = {
-            'mensaje': 'Producto creago, exitosamente!',
+            'mensaje': 'Producto creado, exitosamente!',
             'type' : 'success',
             'tittle': 'Registro producto!',
             'nombre': producto.nombre,
@@ -305,7 +335,8 @@ def editar_producto(request, id):
     
     producto.save()
 
-    print(producto.nombre)
+    print(producto.nombre)    
+    actualizarLista(producto.lista.id)
     data = {
         'mensaje': 'Producto editado, exitosamente!',
         'type' : 'success',
@@ -319,3 +350,39 @@ def editar_producto(request, id):
         'row_number': row_number
     }
     return JsonResponse(data,safe=False)
+
+def totalProductos(id):
+    productos = Producto.objects.all().filter(lista_id = id)    
+    return productos.count()
+
+def totalProductosComprados(id):
+    productos = Producto.objects.all().filter(lista_id=id, comprado=True)    
+    return productos.count()
+
+def costoTotalProductos(id):
+    producto = Producto.objects.filter(lista_id=id)
+    total = 0
+    for element in producto:
+        total = total + element.precioPresupuesto
+    print(total)
+    return total
+
+def costoRealProductos(id):
+    producto = Producto.objects.filter(lista_id=id)
+    total = 0
+    for element in producto:
+        total = total + element.precioReal
+    print(total)
+    return total
+
+def actualizarLista(id):
+    print("LISTA --------->")
+    
+    lista = Lista.objects.get(pk=id)
+    lista.totalPresupuesto = totalProductos(id)
+    lista.totalProductosComprados = totalProductosComprados(id)
+    lista.costoTotalPresupuesto = costoTotalProductos(id)
+    lista.costoTotalReal = costoRealProductos(id)
+
+    lista.save()
+    return True
