@@ -1,7 +1,7 @@
 var CACHE_NAME = 'examen-cache';
 
 var urlsToCache = [
-    '../',
+    '/',
     '/static/icons/fuse-icon-font/style.css',
     '/static/node_modules/animate.css/animate.min.css',
     '/static/node_modules/pnotify/src/PNotifyBrightTheme.css',
@@ -56,7 +56,7 @@ self.addEventListener('fetch', function(event) {
         .then(function(response) {
             // Cache hit - return response
         if (response) {
-                    return response;
+            return response;
         }
         return fetch(event.request);
         })
