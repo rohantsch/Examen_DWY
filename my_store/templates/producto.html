@@ -298,7 +298,9 @@
                                                 <td>{{p.comprado}}</td>
                                                 <td>{{p.tienda.nombre}}</td>
                                                 <td>
-                                                    <button value="{{elemento.id}}|{{elemento.nombre}}" type="button" class="btn btn-icon editar_lista_pencil" data-toggle="modal" data-rowcounter="{{forloop.counter0}}" data-nombre="{{elemento.nombre}}" data-idlista="{{elemento.id}}" data-target="#editar_modal" aria-label="Product details">
+                                                    <button type="button" class="btn btn-icon editar_producto_pencil" data-toggle="modal" data-target="#editar_modal" aria-label="Product details"
+                                                    data-rowcounter="{{forloop.counter0}}" data-nombre="{{p.nombre}}" data-precio_presupuesto="{{p.precioPresupuesto}}" data-precio_real="{{p.precioReal}}" 
+                                                    data-observacion="{{p.observacion}}" data-comprado="{{p.comprado}}" data-nombre_tienda="{{p.tienda.nombre}}" data-id="{{p.id}}">
                                                         <i class="icon icon-pencil s-4"></i>
                                                     </button>
                                                 </td>
@@ -380,67 +382,70 @@
     
     <!-- Fin Modal-->
 
-
-    <!-- Modal Editar Lista -->
+    <!-- Modal Crear Lista -->
 
     <div class="modal fade" id="editar_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar lista</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editar_form">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Nombre producto:</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" />
-                            </div>   
-                            <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Precio Presupuesto:</label>
-                                <input type="number" id="precioPresupuesto" name="precioPresupuesto" class="form-control" />
-                            </div>                      
-                            <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Precio Real:</label>
-                                <input type="number" id="precioReal" name="precioReal" class="form-control"  />
-                            </div> 
-                            <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Observación:</label>
-                                <input type="text" id="observacion" name="observacion" class="form-control" />
-                            </div> 
-                            <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Comprado:</label>
-                                <input type="text" id="comprado" name="comprado" class="form-control" />
-                            </div> 
-                            <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Tienda:</label>
-                                <select class="form-control" name="tienda">
-                                    <option hidden >Seleccione tienda</option>
-                                    {% for p in tiendas %}
-                                        <option value="{{p}}">{{p.nombre}}</option>
-                                    {% endfor %}
-                                </select>
-                                    
-                            </div>                        
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" id="editar_lista_button" class="btn btn-primary">Editar</button>
-                    </div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editar_form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Nombre producto:</label>
+                            <input type="text" id="nombre2" name="nombre2" class="form-control" />
+                        </div>   
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Precio Presupuesto:</label>
+                            <input type="number" id="precioPresupuesto2" name="precioPresupuesto2" class="form-control" />
+                        </div>                      
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Precio Real:</label>
+                            <input type="number" id="precioReal2" name="precioReal2" class="form-control"  />
+                        </div> 
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Observación:</label>
+                            <input type="text" id="observacion2" name="observacion2" class="form-control" />
+                        </div> 
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Comprado:</label>
+                            <select class="form-control" id="comprado2" name="comprado2">
+                                <option hidden >Seleccione opción</option>
+                                <option value="True" >Si, está comprado</option>
+                                <option value="False" >No, no está comprado</option>
+                            </select>
+                        </div> 
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Tienda:</label>
+                            <select class="form-control" id="tienda2" name="tienda2">
+                                <option hidden >Seleccione tienda</option>
+                                {% for p in tiendas %}
+                                    <option value="{{p.nombre}}">{{p.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <input type="hidden" id="editar_id" name="editar_id" value=""/>
+                        <input type="hidden" id="hidden_row_number" name="hidden_row_number" value=""/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="editar_producto" class="btn btn-primary">Editar</button>
                 </div>
             </div>
         </div>
-        
-        <!-- Fin Modal-->
+    </div>
+    
+    <!-- Fin Modal-->
+    
 </body>
 <script type="text/javascript">
       $( document ).ready(function() {
-
-          var id_lista = 0;
 
             var t = $('#e-commerce-products-table').DataTable();            
             $("#crear_producto").on("click",function () {
@@ -476,39 +481,33 @@
             });
 
 
-            $("#editar_lista_button").on("click",function () {
+            $("#editar_producto").on("click",function () {
                 str = $('#editar_form').serialize();
                 console.log( str );
                 $.ajax({
                     type: "POST",
-                    url: "listas/editar/" +  $("#editar_id").val(),
+                    url: "/producto/editar/" +  $("#editar_id").val(),
                     data: str,
                     success: function(data) {
                         $('#editar_modal').modal('toggle');
-                        
-                        var estado = 'False';
-                        if(data.estado){
-                            estado = 'True';
-                        }
                         var temp = 
                             [
-                                data.id, 
-                                data.nombre, 
-                                data.totalPresupuesto, 
-                                data.totalProductoComprados, 
-                                data.costoTotalPresupuesto, 
-                                data.costoTotalReal, 
-                                estado,
+                                data.nombre,
+                                data.precioPresupuesto,
+                                data.precioReal,
+                                data.observacion,
+                                data.comprado,
+                                data.tienda,
                                 '<button type="button" class="btn btn-icon" aria-label="Product details">' +
                                     '<i class="icon icon-pencil s-4"></i>' +
-                                '</button>'
+                                '</button>',
                             ];
                         
                         t.row(data.row_number).data(temp).draw();
 
                         PNotify.success({
-                            title: 'Lista editada!',
-                            text: 'Su lista, a sido editada correctamente.'
+                            title: data.tittle,
+                            text: data.mensaje
                         });
                     },
                     error: function(data) {
@@ -517,12 +516,24 @@
                 });
             });
             
-            $(document).on("click", ".editar_lista_pencil", function () {
+            $(document).on("click", ".editar_producto_pencil", function () {
+                var id = $(this).data('id');
                 var nombre = $(this).data('nombre');
-                var id_lista = $(this).data('idlista');
+                var precioPresupuesto = $(this).data('precio_presupuesto');
+                var precioReal = $(this).data('precio_real');
+                var observacion = $(this).data('observacion');
+                var comprado = $(this).data('comprado');
+                var nombreTienda = $(this).data('nombre_tienda');
                 var row_number = $(this).data('rowcounter');
-                $("#editar_nombre").val( nombre );
-                $("#editar_id").val(id_lista);
+                
+                $("#nombre2").val( nombre );
+                $("#precioPresupuesto2").val( precioPresupuesto );
+                $("#precioReal2").val( precioReal );
+                $("#observacion2").val( observacion );
+                $("#comprado2").val( comprado );
+                $("#tienda2").val( nombreTienda );
+                $("#editar_id").val( id );
+                
                 $("#hidden_row_number").val(row_number);
             });
         });

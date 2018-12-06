@@ -264,3 +264,43 @@ def crear_producto(request, id):
             'tittle': 'Registro producto!'
         }
         return JsonResponse(data,safe=False) 
+
+def editar_producto(request, id):
+    row_number = request.POST.get('hidden_row_number','')
+
+    nombre = request.POST.get('nombre2','')
+    precioPresupuesto = request.POST.get('precioPresupuesto2','')
+    precioReal = request.POST.get('precioReal2','')
+    observacion = request.POST.get('observacion2','')
+    comprado = request.POST.get('comprado2','')
+    tiendax = request.POST.get('tienda2','')
+
+    print(nombre)
+    print(tiendax)
+
+    producto = Producto.objects.get(pk=id)
+    tienda = Tienda.objects.get(nombre=tiendax)
+
+    producto.nombre = nombre
+    producto.precioPresupuesto = precioPresupuesto
+    producto.precioReal = precioReal
+    producto.observacion = observacion
+    producto.comprado = comprado
+    producto.tienda = tienda
+    
+    producto.save()
+
+    print(producto.nombre)
+    data = {
+        'mensaje': 'Producto editado, exitosamente!',
+        'type' : 'success',
+        'tittle': 'Edita producto',
+        'nombre': producto.nombre,
+        'precioPresupuesto': producto.precioPresupuesto,
+        'precioReal': producto.precioReal,
+        'observacion': producto.observacion,
+        'comprado': producto.comprado,
+        'tienda': tienda.nombre,
+        'row_number': row_number
+    }
+    return JsonResponse(data,safe=False)

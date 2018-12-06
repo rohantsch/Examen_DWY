@@ -28,4 +28,5 @@ urlpatterns = [
     #MODULO PRODUCTO
     path('producto/<int:id>', views.producto, name="producto"),
     path('producto/crear/<int:id>', views.crear_producto, name="crear_producto"),
+    path('producto/editar/<int:id>', views.editar_producto, name="editar_producto"),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
