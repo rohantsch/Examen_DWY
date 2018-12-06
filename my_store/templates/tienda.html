@@ -114,7 +114,13 @@
                                     <img class="avatar" src="../static/images/avatars/profile.jpg">
                                     <i class="status text-green icon-checkbox-marked-circle s-4"></i>
                                 </div>
-                                <span class="username mx-3 d-none d-md-block">{{user.username}}{{usuario}}</span>
+                                <span class="username mx-3 d-none d-md-block">
+                                        {% if request.user.is_staff %}
+                                        Admin {{usuario}}
+                                        {% else %}
+                                            {{user.username}}{{usuario}}
+                                        {% endif %}
+                                </span>
                             </div>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownUserMenu">
@@ -183,7 +189,7 @@
 
                                 <i class="icon s-4 icon-store"></i>
 
-                                <span>Crear nueva tienda</span>
+                                <span>Lista de tiendas</span>
                             </a>                        
                         </li>
                     </ul>
@@ -299,13 +305,22 @@
                                                 <td>{{p.region}}</td>
                                                 <td>{{p.ciudad}}</td>
                                                 <td>{{p.estado}}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-icon editar_tienda_pencil" data-toggle="modal"  aria-label="Product details"
-                                                        data-id="{{p.id}}" data-nombre="{{p.nombre}}" data-sucursal="{{p.nombreSucursal}}" data-direccion="{{p.direccion}}" 
-                                                        data-rowcounter="{{forloop.counter0}}" data-region="{{p.region}}" data-ciudad="{{p.ciudad}}"  data-target="#editar_modal">
-                                                        <i class="icon icon-pencil s-4"></i>
-                                                    </button>
-                                                </td>
+                                                {% if request.user.is_staff %}
+                                                    <td>    
+                                                        <button type="button" class="btn btn-icon aprobar_tienda_pencil" data-toggle="modal"  aria-label="Product details"
+                                                            data-id="{{p.id}}" data-rowcounter="{{forloop.counter0}}" data-target="#aprobar_modal">
+                                                            <i class="icon icon-check s-6"></i>
+                                                        </button>
+                                                    </td>
+                                                {% else %}                                            
+                                                    <td>    
+                                                        <button type="button" class="btn btn-icon editar_tienda_pencil" data-toggle="modal"  aria-label="Product details"
+                                                            data-id="{{p.id}}" data-nombre="{{p.nombre}}" data-sucursal="{{p.nombreSucursal}}" data-direccion="{{p.direccion}}" 
+                                                            data-rowcounter="{{forloop.counter0}}" data-region="{{p.region}}" data-ciudad="{{p.ciudad}}"  data-target="#editar_modal">
+                                                            <i class="icon icon-pencil s-4"></i>
+                                                        </button>
+                                                    </td>
+                                                {% endif %}                                                
                                             </tr>
                                         {% endfor %}
 
@@ -442,9 +457,35 @@
                 </div>
             </div>
         </div>
-    </div>
-    
+    </div>    
     <!-- Fin Modal-->
+
+    <div id="aprobar_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLiveLabel">Estimado administrador</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>                            
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Desea aprobar esta Tienda?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="aprobar_form">
+                            {% csrf_token %}
+                            <input id="id_tienda" name="id_tienda" type="hidden" value=""/>                            
+                            <input type="hidden" id="hidden_row_number_tienda" name="hidden_row_number_tienda" class="form-control" value=""/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button id="aprobar_tienda" type="button" class="btn btn-info">Aprobar</button>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Fin Modal-->
+
 </body>
 <script type="text/javascript">
     $( document ).ready(function() {
@@ -468,6 +509,28 @@
                             '<i class="icon icon-pencil s-4"></i>' +
                         '</button>',
                     ] ).draw( true ); 
+                    PNotify.success({
+                        title: 'Tienda creada!',
+                        text: 'Su tienda, a sido creada correctamente.'
+                    });                       
+                },
+                error: function(data) {
+                    alert("error");
+                }
+            });
+        });  
+
+       $("#aprobar_tienda").on("click",function () {
+            str = $('#aprobar_form').serialize();
+            $.ajax({
+                type: "POST",
+                url: "tienda/aprobar/" + $("#id_tienda").val(),
+                data: str,
+                success: function(data) {
+                    $('#aprobar_modal').modal('toggle');
+
+                    t.row($('#hidden_row_number_tienda').val()).remove().draw(true); 
+
                     PNotify.success({
                         title: 'Tienda creada!',
                         text: 'Su tienda, a sido creada correctamente.'
@@ -532,7 +595,16 @@
             $("#comuna2").val( ciudad );           
             $("#editar_id").val(id_tienda);
             $("#hidden_row_number").val(row_number);
-        });         
+        });
+        
+        $(document).on("click", ".aprobar_tienda_pencil", function () {
+            var id = $(this).data('id');        
+            var row_number = $(this).data('rowcounter');
+            
+            $("#id_tienda").val(id);
+            $("#hidden_row_number_tienda").val(row_number);
+        });
+
       });
 </script>
 </html>
