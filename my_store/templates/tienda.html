@@ -137,7 +137,7 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                <a class="dropdown-item" href="cerrarsession" >
+                                <a class="dropdown-item" href="/cerrarsession" >
                                     <div class="row no-gutters align-items-center flex-nowrap">
                                         <i class="icon-logout"></i>
                                         <span class="px-3">Cerrar sesión</span>
@@ -500,7 +500,7 @@
                 url: "tienda/crear",
                 data: str,
                 success: function(data) {
-                    $('#exampleModalLabel').modal('toggle');
+                    $('#exampleModal').modal('toggle');
                     t.row.add( [
                         data.nombre,
                         data.nombreSucursal,
