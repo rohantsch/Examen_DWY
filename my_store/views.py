@@ -34,11 +34,26 @@ def login(request):
             #auth_login(request, user)
             request.session['usuario'] = usuario[0].nombre
             request.session['id'] = usuario[0].id
-            return redirect('home')
+            data = { 
+                'mensaje': 'Usuario logeado!', 
+                'type' : 'success', 
+                'tittle': 'Inicio sesión',
+            } 
+            return JsonResponse(data,safe=False)
         else:
-            return redirect('index',{'mensaje':'Las credenciales son incorrectas.'})
+            data = { 
+                'mensaje': 'Las credenciales son incorrectas!', 
+                'type' : 'warning', 
+                'tittle': 'Inicio sesión',
+            } 
+            return JsonResponse(data,safe=False)
     else:
-        return redirect('index',{'mensaje':'No existe el Usuario.'})
+        data = { 
+            'mensaje': 'No existe el Usuario!', 
+            'type' : 'error', 
+            'tittle': 'Inicio sesión',
+        } 
+        return JsonResponse(data,safe=False)
 
 def cargar(request):
     return redirect('home')

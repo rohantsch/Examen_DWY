@@ -24,6 +24,34 @@
 
     <!--Manifest-->
     <link rel="manifest" href="/manifest.json">
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="../static/node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Mobile Detect -->
+    <script type="text/javascript" src="../static/node_modules/mobile-detect/mobile-detect.min.js"></script>
+    <!-- Perfect Scrollbar -->
+    <script type="text/javascript" src="../static/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+    <!-- Popper.js -->
+    <script type="text/javascript" src="../static/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="../static/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Nvd3 - D3 Charts -->
+    <script type="text/javascript" src="../static/node_modules/d3/d3.min.js"></script>
+    <script type="text/javascript" src="../static/node_modules/nvd3/build/nv.d3.min.js"></script>
+    <!-- Data tables -->
+    <script type="text/javascript" src="../static/node_modules/datatables.net/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="../static/node_modules/datatables-responsive/js/dataTables.responsive.js"></script>
+    <!-- PNotify -->
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotify.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyStyleMaterial.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyButtons.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyCallbacks.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyMobile.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyHistory.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyDesktop.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyConfirm.js"></script>
+    <script type="text/javascript" src="../static/node_modules/pnotify/dist/iife/PNotifyReference.js"></script>
+
 </head>
 <body class="layout layout-vertical layout-left-navigation layout-below-toolbar layout-below-footer">
     <main>
@@ -60,7 +88,7 @@
 
                                 <div class="description mt-2">Complete el formulario, para crear su cuenta</div>
 
-                                <form method="POST" action="/usuario/crear" id="form_crear" name="registerForm" novalidate class="mt-8">
+                                <form  id="form_crear" class="mt-8">
                                     {% csrf_token %}
                                     <div class="form-group mb-4">
                                         <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" />
@@ -82,7 +110,7 @@
                                         <label for="registerFormInputPasswordConfirm">Contraseña (Confirmar)</label>
                                     </div>
 
-                                    <button type="submit" id="crear_usuario" class="submit-button btn btn-block btn-secondary my-4 mx-auto" aria-label="LOG IN">
+                                    <button type="button" id="crear_usuario" class="submit-button btn btn-block btn-secondary my-4 mx-auto" aria-label="LOG IN">
                                         CREAR MI CUENTA
                                     </button>
 
@@ -127,10 +155,33 @@
                     url: "usuario/crear",
                     data: str,
                     success: function(data) {
-                        PNotify.success({
-                            title: data.tittle,
-                            text: data.mensaje
-                        });
+                        if(data.type=="success"){
+                            PNotify.success({
+                                title: data.tittle,
+                                text: data.mensaje
+                            });
+                            $("#nombre").val("");
+                            $("#email").val("");
+                            $("#contrasenia").val("");
+                            $("#confirm_contrasenia").val("");
+                        }
+                        if(data.type=="warning"){
+                            PNotify.error({
+                                title: data.tittle,
+                                text: data.mensaje
+                            });
+                            $("#nombre").val("");
+                            $("#email").val("");
+                            $("#contrasenia").val("");
+                            $("#confirm_contrasenia").val("");
+                        }
+                        if(data.type=="error"){
+                            PNotify.info({
+                                title: data.tittle,
+                                text: data.mensaje
+                            });
+                        }
+                        
                     },
                     error: function(data) {
                         PNotify.error({

@@ -27,6 +27,7 @@ var urlsToCache = [
     '/static/node_modules/pnotify/dist/iife/PNotifyReference.js',
     '/static/fuse-html/fuse-html.min.js',
     '/static/js/main.js',
+    '/static/js/app.js',
 
     //Registrar
     '/static/favicon.ico',
