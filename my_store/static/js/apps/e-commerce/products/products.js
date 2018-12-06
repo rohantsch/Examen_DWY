@@ -60,6 +60,18 @@
                         }
                     },
                     {
+                        // Target the price column
+                        targets: 1,
+                        render : function (data, type) {
+                            if ( type === 'display' )
+                            {
+                                return '<div class="layout-align-start-start layout-row">' + '<i class="s-4 icon-currency-usd text-muted"></i>' + '<span>' + data + '</span>' + '</div>';
+                            }
+
+                            return data;
+                        }
+                    },
+                    {
                         // Target the quantity column
                         targets: 5,
                         render : function (data, type) {

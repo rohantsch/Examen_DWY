@@ -245,13 +245,13 @@
                                         <tr>
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">ID</span>
+                                                    <span class="column-title">Nombre</span>                                                    
                                                 </div>
                                             </th>
                                             
                                             <th>
                                                 <div class="table-header">
-                                                    <span class="column-title">Nombre</span>
+                                                        <span class="column-title">Productos</span>
                                                 </div>
                                             </th>
 
@@ -296,8 +296,12 @@
                                     <tbody id="tbody">
                                         {% for elemento in listas %}
                                             <tr>
-                                                <td>{{elemento.id}}</td>
                                                 <td>{{elemento.nombre}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-icon editar_lista_pencil" onclick="location.href='/producto/{{elemento.id}}'" aria-label="Product details">                                                        
+                                                        <i class="icon icon-cart-plus s-6"></i>
+                                                    </button>
+                                                </td>
                                                 <td>{{elemento.totalPresupuesto}}</td>
                                                 <td>{{elemento.totalProductosComprados}}</td>
                                                 <td>{{elemento.costoTotalPresupuesto}}</td>
@@ -395,7 +399,7 @@
 
           var id_lista = 0;
 
-            var t = $('#e-commerce-products-table').DataTable();            
+            var t = $('#e-commerce-products-table').DataTable();
             $("#crear_lista").on("click",function () {
                 str = $('#form_crear').serialize();
                 console.log( str );
@@ -404,24 +408,36 @@
                     url: "listas/crear",
                     data: str,
                     success: function(data) {
-                        $('#exampleModal').modal('toggle');
+                        if(data.type === 'error'){
+                            PNotify.info({
+                                title: data.tittle,
+                                text: data.mensaje
+                            });
+                            $('#nombre').val("");
+                            $('#exampleModal').modal('toggle');
+                        }else {
+                            $('#exampleModal').modal('toggle');
+                        var t = $('#e-commerce-products-table').DataTable();
                         t.row.add( [
-                            data.id_lista,
                             data.nombre_lista,
+                            '<button type="button" class="btn btn-icon editar_lista_pencil" onclick="location.href=\'/producto/' + data.id_lista + '\'" aria-label="Product details">' +
+                                '<i class="icon icon-cart-plus s-6"></i>' +
+                            '</button>',
                             0,
                             0,
                             0,
                             0,
                             'true',
-                            '<button type="button" class="btn btn-icon" aria-label="Product details">' +
+                            '<button type="button" class="btn btn-icon editar_lista_pencil" data-toggle="modal" data-rowcounter="0" data-nombre="' + data.nombre_lista + '" data-idlista="' +  data.id_lista + '" data-target="#editar_modal"  aria-label="Product details">' +
                                 '<i class="icon icon-pencil s-4"></i>' +
                             '</button>',
                         ] ).draw( true );  
                         
-                        PNotify.success({
-                            title: 'Lista creada!',
-                            text: 'Su lista, a sido creada correctamente.'
-                        });
+                            PNotify.success({
+                                title: 'Lista creada!',
+                                text: 'Su lista, a sido creada correctamente.'
+                            });
+                        }                        
                     },
                     error: function(data) {
                         alert("error");
@@ -446,8 +462,10 @@
                         }
                         var temp = 
                             [
-                                data.id, 
                                 data.nombre, 
+                                '<button type="button" class="btn btn-icon editar_lista_pencil" onclick="location.href=\'/producto/' + data.id + '\'" aria-label="Product details">' +
+                                    '<i class="icon icon-cart-plus s-6"></i>' +
+                                '</button>',
                                 data.totalPresupuesto, 
                                 data.totalProductoComprados, 
                                 data.costoTotalPresupuesto, 
